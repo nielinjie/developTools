@@ -1,0 +1,30 @@
+
+def svnUserName='nielinjie001'
+def svnUrl='http://svn.paic.com.cn/svn/laws_core/trunk/core_j2ee/'
+def svnPassword='2013PaGoon'
+def workFolder=new File('..').getAbsoluteFile()
+def docFolder = new File(workFolder,'doc')
+
+task lastVersion << {
+    println new com.paic.developer.svn.SVN(svnUserName,svnpassword,svnUrl).lastVersion()
+}
+task ccn <<{
+    println new com.paic.developer.measure.JNcss$().report(new File(docFolder,'javancss/javancss_metrics.xml'))
+}
+
+task diff <<{
+	println new com.paic.developer.svn.SVN(svnUserName,svnPassword,svnUrl,workFolder).diff()
+}
+task audit <<{
+	def diffs=new com.paic.developer.svn.SVN(svnUserName,svnPassword,svnUrl,workFolder).diff()
+	def ccns=new com.paic.developer.measure.JNcss$().report(new File(docFolder,'javancss/javancss_metrics.xml'))
+	println((new com.paic.developer.code.Audit$()).forTouchedMethod(diffs,ccns))
+}
+
+
+task server << {
+		def diffPlan = new com.paic.developer.code.DiffPlan(svnUserName,svnPassword,svnUrl,workFolder)
+		def dPlan=new com.paic.domain.Plan([new File('./shenpi.model')])
+		def plans = [diffPlan,dPlan]
+    new com.paic.server.Server(plans,new File('.\\buildSrc\\src\\main\\webApp'),8080).service()
+}

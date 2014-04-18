@@ -1,0 +1,36 @@
+
+apply plugin: 'java'
+apply plugin: 'scala'
+apply plugin: 'idea'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'http://maven.tmatesoft.com/content/repositories/releases'
+    }
+}
+dependencies {
+    compile 'org.tmatesoft.svnkit:svnkit:1.8.4'
+    compile 'org.scala-lang:scala-library:2.10.4'
+    compile 'com.google.code.javaparser:javaparser:1.0.8'
+    compile 'net.databinder:unfiltered-jetty_2.10:0.7.1'
+    compile 'net.databinder:unfiltered-netty-websockets_2.10:0.7.1'
+    compile 'net.databinder:unfiltered-filter_2.10:0.7.1'
+    compile 'net.databinder:unfiltered-util_2.10:0.7.1'
+    compile 'net.databinder:unfiltered-json4s_2.10:0.7.1'
+    compile 'org.json4s:json4s-native_2.10:3.2.6'
+    compile 'org.json4s:json4s-ext_2.10:3.2.6'
+    compile 'com.googlecode.kiama:kiama_2.10:1.5.2'
+    compile 'org.scalaz:scalaz-core_2.10:7.0.3'
+    compile 'org.slf4j:slf4j-api:1.7.6'
+     compile 'dom4j:dom4j:1.4'
+}
+sourceSets.main.scala.srcDir "src/main/java"
+sourceSets.main.java.srcDirs = []
+tasks.withType(ScalaCompile) {
+    scalaCompileOptions.useAnt = false
+}
+
+dependencies {
+    compile group: 'com.typesafe.akka', name: 'akka-actor_2.10', version: '2.3.2'
+}

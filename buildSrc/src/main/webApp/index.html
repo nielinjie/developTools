@@ -1,0 +1,76 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon"
+          type="image/png"
+          href="img/domain.png">
+    <title>Hello Domain</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="./css/font-awesome.min.css">
+    <link rel="stylesheet" href="./css/graph.css">
+    <link rel="stylesheet" href="./css/table.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="http://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="http://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<section class="container">
+    <section class="row">
+        <header class="col-lg-12">
+            <h1>Hello, Domain!</h1>
+            <button class="btn btn-default reload">Reload. <i class="fa fa-repeat fa-fw reload"></i></button>
+            <button class="btn btn-default source">Source Editor. <i class="fa fa-pencil-square-o fa-fw"></i></button>
+        </header>
+        <content class="col-lg-8 svg">
+
+        </content>
+        <aside class="col-lg-4">
+            <form class="form-inline" role="form">
+
+                    <input type="search" class="form-control" id="search-input" placeholder="Search">
+                <button type="button" class="btn btn-default clear btn-sm"><i class="fa fa-eraser"></i> Unselect All</button>
+            </form>
+            <table class="table nodes-table">
+                <thead>
+                <tr>
+                    <th>Node</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </aside>
+    </section>
+
+</section>
+<script src="./js/lib/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="./js/lib/bootstrap.min.js"></script>
+<script src="./js/lib/underscore-min.js"></script>
+
+
+<script src="./js/lib/d3.min.js"></script>
+
+<script src="./js/domain.js"></script>
+<script src="./js/graph.js"></script>
+<script src="./js/table.js"></script>
+<script src="./js/control.js"></script>
+</body>
+</html>

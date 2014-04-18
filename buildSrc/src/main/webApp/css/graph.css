@@ -1,0 +1,48 @@
+.link {
+  stroke: DarkRed;
+  stroke-width: 1px;
+}
+.link.extend {
+    stroke: DarkRed;
+    stroke-dasharray: 10,10;
+}
+
+marker {
+stroke: DarkRed;
+  stroke-width: 1px;
+   fill:none;
+}
+
+
+.node.hover ellipse{
+    fill:DarkKhaki
+}
+.node.hover circle{
+    fill:DarkKhaki
+}
+.node ellipse{
+  cursor: move;
+  fill: LightYellow;
+  stroke: DarkRed;
+  stroke-width: 1.5px;
+}
+.node circle{
+  cursor: move;
+  fill: LightGreen;
+  stroke: DarkGreen;
+  stroke-width: 1.5px;
+}
+
+.node.fixed ellipse{
+  fill: DarkKhaki;
+}
+
+.node.fixed circle{
+  fill: DarkKhaki;
+}
+
+
+.node text {
+  pointer-events: none;
+  font: 12px sans-serif;
+}

@@ -1,0 +1,23 @@
+.label-function {
+    background-color:LightYellow;
+    color: LightGray
+}
+.label-entity {
+    background-color:LightGreen;
+
+}
+
+tr.hover td{
+    background-color:LightGray
+}
+
+tr.selected td{
+    background-color:Gray
+}
+
+.nodes-table tr.hover button{
+    display: inline-block;
+}
+.nodes-table tr button{
+    display: none;
+}
