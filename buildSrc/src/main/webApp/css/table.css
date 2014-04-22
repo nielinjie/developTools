@@ -21,3 +21,8 @@ tr.selected td{
 .nodes-table tr button{
     display: none;
 }
+
+.table-flow{
+    height: 700px;
+    overflow: auto;
+}
