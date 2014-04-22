@@ -17,7 +17,7 @@ object Parser extends RegexParsers {
   def SC = SPACES | CRLF
   def comment = "//(.*)".r
 
-  def name = "[\u4e00-\u9fa5\\w]+".r
+  def name = "[\u4e00-\u9fa5\\w/]+".r
 
   def domain: Parser[Domain] = {
     blocked(func *)  ^^ {
