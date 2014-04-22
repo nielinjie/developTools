@@ -13,8 +13,10 @@ function updateTable(graph){
     $(".nodes-table tbody tr button.btn").on("click", function(e){
             e.stopPropagation()
             var name=$(this).attr("data-name")
-            var names=findRelated(name)
-            setSelected(_(names).union([name]))
+//            var names=findRelated(name)
+//            setSelected(_(names).union([name]))
+            addFocus(name)
+            applySearches()
         })
     $(".nodes-table tbody tr").on("click", function(e){
         $(this).toggleClass( "selected" )
@@ -25,11 +27,11 @@ function updateTable(graph){
                                 function() {
                                   $( this ).addClass( "hover" );
                                   //TODO jquery don't support svg
-                                  $("g.node[data-name="+$(this).attr("data-name")+"]").addClass("hover")
+                                  $("g.node[data-name=\""+$(this).attr("data-name")+"\"]").addClass("hover")
                                 }, function() {
                                   $( this ).removeClass( "hover" );
                                   //TODO jquery don't support svg
-                                  $("g.node[data-name="+$(this).attr("data-name")+"]").removeClass("hover")
+                                  $("g.node[data-name=\""+$(this).attr("data-name")+"\"]").removeClass("hover")
 
                                 }
                               );
