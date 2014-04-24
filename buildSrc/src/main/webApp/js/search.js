@@ -1,26 +1,36 @@
 window.searchers=[]
+
+$("#search-input").on("change",function(event){
+    var search=$(this).val()
+    $(this).val('')
+    addSearchText(search)
+    applySearches()
+})
+
 function addSelect(name) {
     var searcher=({
         type:'select',
         fun:function (){
             return [name]
         },
-        display:'select: '+name
+        display:'select: '+name,
+        id:_.uniqueId('searcher')
     })
     window.searchers.push(searcher)
-        addSearchToTag(searcher)
+        refreshSearcherBox()
 }
 function addFocus(name) {
     var searcher={
                              type:'select',
                              fun:function() {
-                                 return findRelated(name)
+                                 return _(findRelated(name)).cat(name)
                              },
-                             display:'focus: '+name
+                             display:'focus: '+name,
+        id:_.uniqueId('searcher')
 
                          }
     window.searchers.push(searcher)
-    addSearchToTag(searcher)
+    refreshSearcherBox()
 }
 function addSearchText(text) {
     var searcher=({
@@ -33,15 +43,26 @@ function addSearchText(text) {
                         return n.indexOf(text)!=-1
                     }).value()
                 },
-                display:'search: '+text
+                display:'search: '+text,
+                        id:_.uniqueId('searcher')
+
             })
              window.searchers.push(searcher)
-                    addSearchToTag(searcher)
+                    refreshSearcherBox()
 }
 
-function addSearchToTag(searcher){
-    var now=$("#search-input").val()
-    $("#search-input").val(now+" "+searcher.display)
+function refreshSearcherBox(){
+    $(".searcher-box").empty()
+    _(window.searchers).each(function(s){
+        var label=$("<span class='label searcher-label'/>").addClass("label-searcher-"+s.type).text(s.display).attr('data-id',s.id)
+        $(".searcher-box").append(label).append(' ')
+        label.on("click",function(e){
+            var id=$(this).attr('data-id')
+            window.searchers=_(window.searchers).reject(function(s){return s.id==id})
+            refreshSearcherBox()
+            applySearches()
+        })
+    })
 }
 function resetTable(){
     $(".nodes-table tbody tr").removeClass("selected").removeClass("displayed")
@@ -52,10 +73,21 @@ function applySearches(){
         select:'selected',
         display:'displayed'
     }
+    $(".nodes-table tbody tr").removeClass("selected")
+    //For non-display searcher.
+    if (_(window.searchers).any(function(s){
+        return s.type == 'display'
+    })){
+        $(".nodes-table tbody tr").removeClass("displayed")
+    }else{
+        $(".nodes-table tbody tr").addClass("displayed")
+    }
+    //
     _(window.searchers).each(function(s){
             _(s.fun()).each(function(name){
                 $(".nodes-table tbody tr[data-name=\""+name+"\"]").addClass(classes[s.type])
             })
     })
+
     selectedUpdate()
 }

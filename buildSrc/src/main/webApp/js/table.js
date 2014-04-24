@@ -3,6 +3,7 @@ function updateTable(graph){
     $(".nodes-table tbody").empty()
     _(graph.nodes).each(function(n){
         var tr=$("<tr/>").attr("data-name",n.name)
+        tr.addClass("displayed")
         tr.append($("<td>").text(n.name))
         var td=$("<td>").append($("<span>").addClass("label").addClass("label-"+n.type).text(n.type =="function"?"F":"E"))
         tr.append(td)

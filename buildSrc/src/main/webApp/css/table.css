@@ -7,6 +7,14 @@
 
 }
 
+.nodes-table tbody tr td {
+  display:none;
+}
+
+.nodes-table tbody tr.displayed td {
+  display:table-cell;
+}
+
 tr.hover td{
     background-color:LightGray
 }
