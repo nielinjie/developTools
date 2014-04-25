@@ -25,20 +25,7 @@ function reloadDomain(){
     })
 }
 
-$("#search-input").on("keyup",function(event){
-    var search=$(this).val()
-    function match(n){
-        return n.indexOf(search)!=-1 ? 1:0
-    }
-    reorderTable(function(na,nb){
-        return   match(nb) - match(na)
-    })
-})
 
-$(".clear").on("click",function(event){
-    $(".nodes-table tbody tr").removeClass("selected")
-    selectedUpdate()
-})
 
 
 
@@ -81,7 +68,7 @@ function selectedUpdate() {
 }
 function setSelected(names){
     _(names).each(function(n){
-        $(".nodes-table tbody tr[data-name="+n+"]").addClass("selected")
+        $(".nodes-table tbody tr[data-name=\""+n+"\"]").addClass("selected")
     })
     selectedUpdate()
 }

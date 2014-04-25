@@ -3,33 +3,42 @@ function updateTable(graph){
     $(".nodes-table tbody").empty()
     _(graph.nodes).each(function(n){
         var tr=$("<tr/>").attr("data-name",n.name)
+        tr.addClass("displayed")
         tr.append($("<td>").text(n.name))
         var td=$("<td>").append($("<span>").addClass("label").addClass("label-"+n.type).text(n.type =="function"?"F":"E"))
         tr.append(td)
-        var td2=$("<td>").append($("<button type='button' class='btn btn-default btn-xs'>Focus</button>").attr("data-name",n.name))
+        var button=$("<button type='button' class='btn btn-default btn-xs'>Focus. </button>").attr("data-name",n.name)
+        button.append($("<i/>").addClass("fa fa-crosshairs"))
+        var td2=$("<td>").append(button)
         tr.append(td2)
         $(".nodes-table tbody").append(tr)
     })
     $(".nodes-table tbody tr button.btn").on("click", function(e){
             e.stopPropagation()
             var name=$(this).attr("data-name")
-            var names=findRelated(name)
-            setSelected(_(names).union([name]))
+//            var names=findRelated(name)
+//            setSelected(_(names).union([name]))
+            addFocus(name)
+            applySearches()
         })
     $(".nodes-table tbody tr").on("click", function(e){
-        $(this).toggleClass( "selected" )
-        selectedUpdate()
+         e.stopPropagation()
+                    var name=$(this).attr("data-name")
+        //            var names=findRelated(name)
+        //            setSelected(_(names).union([name]))
+                    addSelect(name)
+                    applySearches()
     })
 
     $(".nodes-table tbody tr").hover(
                                 function() {
                                   $( this ).addClass( "hover" );
                                   //TODO jquery don't support svg
-                                  $("g.node[data-name="+$(this).attr("data-name")+"]").addClass("hover")
+                                  $("g.node[data-name=\""+$(this).attr("data-name")+"\"]").addClass("hover")
                                 }, function() {
                                   $( this ).removeClass( "hover" );
                                   //TODO jquery don't support svg
-                                  $("g.node[data-name="+$(this).attr("data-name")+"]").removeClass("hover")
+                                  $("g.node[data-name=\""+$(this).attr("data-name")+"\"]").removeClass("hover")
 
                                 }
                               );

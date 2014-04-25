@@ -19,8 +19,10 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="./css/font-awesome.min.css">
+
     <link rel="stylesheet" href="./css/graph.css">
     <link rel="stylesheet" href="./css/table.css">
+    <link rel="stylesheet" href="./css/searcher.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -41,11 +43,18 @@
 
         </content>
         <aside class="col-lg-4">
-            <form class="form-inline" role="form">
+            <div class="form" role="form">
 
-                    <input type="search" class="form-control" id="search-input" placeholder="Search">
-                <button type="button" class="btn btn-default clear btn-sm"><i class="fa fa-eraser"></i> Unselect All</button>
-            </form>
+                    <input type="search" class="form-control" id="search-input" placeholder="type keyword and enter to search">
+
+            <div class="panel searcher-panel panel-default">
+                <div class="panel-body searcher-box">
+                </div>
+            </div>
+
+            </div>
+
+            <div class="table-flow">
             <table class="table nodes-table">
                 <thead>
                 <tr>
@@ -56,6 +65,7 @@
 
                 </tbody>
             </table>
+            </div>
         </aside>
     </section>
 
@@ -63,14 +73,20 @@
 <script src="./js/lib/jquery.min.js"></script>
 <!-- Latest compiled and minified JavaScript -->
 <script src="./js/lib/bootstrap.min.js"></script>
+
+
 <script src="./js/lib/underscore-min.js"></script>
+<script src="./js/lib/underscore-contrib.min.js"></script>
+
 
 
 <script src="./js/lib/d3.min.js"></script>
+<script src="./js/lib/d3.tip.v0.6.3.js"></script>
 
 <script src="./js/domain.js"></script>
 <script src="./js/graph.js"></script>
 <script src="./js/table.js"></script>
 <script src="./js/control.js"></script>
+<script src="./js/search.js"></script>
 </body>
 </html>
