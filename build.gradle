@@ -1,7 +1,7 @@
 
-def svnUserName='nielinjie001'
+def svnUserName=''
 def svnUrl='http://svn.paic.com.cn/svn/laws_core/trunk/core_j2ee/'
-def svnPassword='2013PaGoon'
+def svnPassword=''
 def workFolder=new File('..').getAbsoluteFile()
 def docFolder = new File(workFolder,'doc')
 def modelFiles = fileTree(dir: 'model',include:'*.model')

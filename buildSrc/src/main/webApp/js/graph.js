@@ -21,6 +21,7 @@ function toolbar(n){
     })
 function update(graph) {
     $(".svg svg").remove()
+    tip.hide()
     var width = 800,
         height = 800;
 

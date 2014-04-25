@@ -1,7 +1,6 @@
 build
 .gradle
 *.bak
-gradle
 *.iml
 *.iws
 *.ipr
