@@ -7,7 +7,9 @@ function updateTable(graph){
         tr.append($("<td>").text(n.name))
         var td=$("<td>").append($("<span>").addClass("label").addClass("label-"+n.type).text(n.type =="function"?"F":"E"))
         tr.append(td)
-        var td2=$("<td>").append($("<button type='button' class='btn btn-default btn-xs'>Focus</button>").attr("data-name",n.name))
+        var button=$("<button type='button' class='btn btn-default btn-xs'>Focus. </button>").attr("data-name",n.name)
+        button.append($("<i/>").addClass("fa fa-crosshairs"))
+        var td2=$("<td>").append(button)
         tr.append(td2)
         $(".nodes-table tbody").append(tr)
     })
@@ -20,8 +22,12 @@ function updateTable(graph){
             applySearches()
         })
     $(".nodes-table tbody tr").on("click", function(e){
-        $(this).toggleClass( "selected" )
-        selectedUpdate()
+         e.stopPropagation()
+                    var name=$(this).attr("data-name")
+        //            var names=findRelated(name)
+        //            setSelected(_(names).union([name]))
+                    addSelect(name)
+                    applySearches()
     })
 
     $(".nodes-table tbody tr").hover(

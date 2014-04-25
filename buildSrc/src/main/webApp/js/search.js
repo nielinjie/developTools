@@ -13,7 +13,7 @@ function addSelect(name) {
         fun:function (){
             return [name]
         },
-        display:'select: '+name,
+        display:'<i class="fa fa-hand-o-up"/> '+name,
         id:_.uniqueId('searcher')
     })
     window.searchers.push(searcher)
@@ -25,7 +25,7 @@ function addFocus(name) {
                              fun:function() {
                                  return _(findRelated(name)).cat(name)
                              },
-                             display:'focus: '+name,
+                             display:'<i class="fa fa-crosshairs"/> '+name,
         id:_.uniqueId('searcher')
 
                          }
@@ -43,7 +43,7 @@ function addSearchText(text) {
                         return n.indexOf(text)!=-1
                     }).value()
                 },
-                display:'search: '+text,
+                display:'<i class="fa fa-search"/> '+text,
                         id:_.uniqueId('searcher')
 
             })
@@ -54,7 +54,10 @@ function addSearchText(text) {
 function refreshSearcherBox(){
     $(".searcher-box").empty()
     _(window.searchers).each(function(s){
-        var label=$("<span class='label searcher-label'/>").addClass("label-searcher-"+s.type).text(s.display).attr('data-id',s.id)
+        var label=$("<span class='label searcher-label'/>")
+            .addClass("label-searcher-"+s.type)
+            .html(s.display)
+            .attr('data-id',s.id)
         $(".searcher-box").append(label).append(' ')
         label.on("click",function(e){
             var id=$(this).attr('data-id')
