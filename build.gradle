@@ -4,6 +4,7 @@ def svnUrl='http://svn.paic.com.cn/svn/laws_core/trunk/core_j2ee/'
 def svnPassword='2013PaGoon'
 def workFolder=new File('..').getAbsoluteFile()
 def docFolder = new File(workFolder,'doc')
+def modelFiles = fileTree(dir: 'model',include:'*.model')
 
 task lastVersion << {
     println new com.paic.developer.svn.SVN(svnUserName,svnpassword,svnUrl).lastVersion()
@@ -24,7 +25,7 @@ task audit <<{
 
 task server << {
 		def diffPlan = new com.paic.developer.code.DiffPlan(svnUserName,svnPassword,svnUrl,workFolder)
-		def dPlan=new com.paic.domain.Plan([new File('./shenpi.model')])
+		def dPlan=new com.paic.domain.Plan(modelFiles as List)
 		def plans = [diffPlan,dPlan]
     new com.paic.server.Server(plans,new File('.\\buildSrc\\src\\main\\webApp'),8080).service()
 }

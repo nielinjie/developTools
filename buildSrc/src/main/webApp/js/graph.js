@@ -1,5 +1,24 @@
+  var tip=d3.tip()
+        .attr('class','d3-tip')
+        .offset([-5,0])
+        .html(function (n){
+                    return toolbar(n)
+                })
+function toolbar(n){
+        var button=$("<button/>").text('Focus. ').attr('type','button').addClass('btn btn-node-focus btn-default').attr('data-node-name',n.name)
+        button.append($("<i/>").addClass("fa fa-crosshairs"))
+        var group=$("<div/>").addClass('btn-group btn-group-xs')
+        group.append(button)
+        return group[0].outerHTML
+    }
 
+    $(document).on('click','.btn-node-focus',function(e){
+        var name=$(this).attr("data-node-name")
+        tip.hide()
+        addFocus(name)
+        applySearches()
 
+    })
 function update(graph) {
     $(".svg svg").remove()
     var width = 800,
@@ -14,8 +33,9 @@ function update(graph) {
         .on("dragstart", dragstart);
 
     var svg = d3.select(".svg").append("svg")
-        .attr("width", width)
-        .attr("height", height);
+        .attr("viewBox", "0 0 "+width+" "+height )
+        .attr("width", "100%")
+        .attr("height", "750px");
 
     svg.append('marker')
         .attr('id', 'arrow')
@@ -56,37 +76,51 @@ function update(graph) {
     var link = svg.selectAll(".link"),
         node = svg.selectAll(".node");
 
-        force
-              .nodes(graph.nodes)
-              .links(graph.links)
-              .linkDistance(function(l){
-              return distance[l.type]
-              })
-              .start();
+    force
+          .nodes(graph.nodes)
+          .links(graph.links)
+          .linkDistance(function(l){
+          return distance[l.type]
+          })
+          .start();
 
-          link = link.data(graph.links)
-            .enter().append("path")
-              .attr("class", function(l){return "link "+l.type})
-               .attr('marker-start',  function(l){return l.type=='g'?'url(#triangle)':'' })
-               .attr('marker-end',function(l){return l.type!='g'?'url(#arrow)':'' })
+      link = link.data(graph.links)
+        .enter().append("path")
+          .attr("class", function(l){return "link "+l.type})
+           .attr('marker-start',  function(l){return l.type=='g'?'url(#triangle)':'' })
+           .attr('marker-end',function(l){return l.type!='g'?'url(#arrow)':'' })
 
-          node = node.data(graph.nodes)
-            .enter().append("g")
-              .attr("class", "node")
-              .attr("data-name",function(n){
-                return n.name}
-              )
-              .on("dblclick", dblclick)
-              .call(drag)
-          node.append(
-            function(n){
-                return (n.type=="function")?document.createElementNS("http://www.w3.org/2000/svg","ellipse"):document.createElementNS("http://www.w3.org/2000/svg","circle")
-            }
-          ).attr("ry", 12).attr("rx",20).attr("r",12)
-          node.append("text")
-                .attr("dx", 22)
-                .attr("dy", ".35em")
-                .text(function(d) { return d.name });
+      node = node.data(graph.nodes)
+        .enter().append("g")
+          .attr("class", "node")
+          .attr("data-name",function(n){
+            return n.name}
+          )
+          .on("dblclick", dblclick)
+          .call(drag)
+
+      node.append(
+        function(n){
+            return (n.type=="function")?document.createElementNS("http://www.w3.org/2000/svg","ellipse"):document.createElementNS("http://www.w3.org/2000/svg","circle")
+        }
+      ).attr("ry", 12).attr("rx",20).attr("r",12)
+
+      node.append("text")
+            .attr("dx", 22)
+            .attr("dy", ".35em")
+            .text(function(d) { return d.name });
+
+
+
+      node.call(tip)
+      .on('mouseover',function(n){
+          tip.hide(n)
+          tip.show(n)
+      })
+
+
+
+
     function tick() {
         link.attr('d', function(d) {
             var deltaX = d.target.x - d.source.x,
@@ -113,6 +147,8 @@ function update(graph) {
       d3.select(this).classed("fixed", d.fixed = true);
     }
 }
+
+
 
 function filter(domain,filterFun) {
     var graph = {}

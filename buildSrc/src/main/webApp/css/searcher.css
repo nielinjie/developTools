@@ -1,0 +1,15 @@
+.label-searcher-select {
+    background-color: Gray;
+}
+
+.label-searcher-display {
+    background-color: #428bca;
+}
+
+.searcher-label {
+    cursor: pointer;
+}
+
+.searcher-panel {
+    margin-top:10px;
+}
