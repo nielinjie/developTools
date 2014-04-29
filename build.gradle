@@ -5,6 +5,7 @@ def svnPassword=''
 def workFolder=new File('..').getAbsoluteFile()
 def docFolder = new File(workFolder,'doc')
 def modelFiles = fileTree(dir: 'model',include:'*.model')
+def testingFiles= fileTree(dir:'testing',include:'*.testing')
 
 task lastVersion << {
     println new com.paic.developer.svn.SVN(svnUserName,svnpassword,svnUrl).lastVersion()
@@ -26,6 +27,7 @@ task audit <<{
 task server << {
 		def diffPlan = new com.paic.developer.code.DiffPlan(svnUserName,svnPassword,svnUrl,workFolder)
 		def dPlan=new com.paic.domain.Plan(modelFiles as List)
-		def plans = [diffPlan,dPlan]
+		def tPlan=new com.paic.testing.Plan(testingFiles as List)
+		def plans = [diffPlan,dPlan,tPlan]
     new com.paic.server.Server(plans,new File('.\\buildSrc\\src\\main\\webApp'),8080).service()
 }
