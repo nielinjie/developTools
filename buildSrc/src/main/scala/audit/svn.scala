@@ -22,7 +22,7 @@ import org.slf4j.{LoggerFactory, Logger}
 import com.paic.server.Messenger
 
 
-class SVN(val userName: String, val password: String, val url: String,val workfolder:File) {
+class SVN(val userName: String, val password: String, val url: String, val workfolder: File) {
   val log: Logger = LoggerFactory.getLogger(classOf[SVN])
 
   lazy val authenticationManager = SVNWCUtil.createDefaultAuthenticationManager(userName, password)
@@ -56,9 +56,9 @@ class SVN(val userName: String, val password: String, val url: String,val workfo
   }
 
 
-  def log(string: Any):Unit = {
+  def log(string: Any): Unit = {
     log.debug(string + "")
-    Messenger.message(string+"")
+    Messenger.message(string + "")
   }
 
   def diff(): List[Method] = {
@@ -105,8 +105,8 @@ class SVN(val userName: String, val password: String, val url: String,val workfo
 
   def onLocalContent(path: String, fun: InputStream => Unit) = {
 
-      //val path2:String=path.split("/").tail.mkString("/")
- 
+    //val path2:String=path.split("/").tail.mkString("/")
+
 
     val in = new FileInputStream(new File(workfolder, path))
     fun(in)
@@ -145,7 +145,7 @@ class SVN(val userName: String, val password: String, val url: String,val workfo
     var re: List[SVNDiffStatus] = List()
     diffClient.doDiffStatus(workfolder, SVNRevision.BASE, workfolder, SVNRevision.WORKING, SVNDepth.INFINITY, true, new ISVNDiffStatusHandler {
       def handleDiffStatus(diffStatus: SVNDiffStatus) {
-      	log(diffStatusToString(diffStatus))
+        log(diffStatusToString(diffStatus))
         re = re :+ diffStatus
       }
     })
@@ -168,17 +168,17 @@ class SVN(val userName: String, val password: String, val url: String,val workfo
         val added = new Regex( """.*\+(\d+)(\,(\d+))?.*""")
         if (l.startsWith("@@") && l.endsWith("@@")) {
           l match {
-          	case added(begin,null,null) => {
-                Some((begin.toInt,begin.toInt))
+            case added(begin, null, null) => {
+              Some((begin.toInt, begin.toInt))
             }
-            case added(begin, _ ,length) => {
+            case added(begin, _, length) => {
               if (length.toInt > 0) {
                 Some((begin.toInt, begin.toInt + length.toInt - 1))
               }
               else
                 None
             }
-            
+
             case _ => None
           }
         }
@@ -222,6 +222,6 @@ class SVN(val userName: String, val password: String, val url: String,val workfo
 
 }
 
-case class Diff (methods:List[Method])
+case class Diff(methods: List[Method])
 
 
