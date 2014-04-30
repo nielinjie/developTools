@@ -22,7 +22,7 @@ import org.slf4j.{LoggerFactory, Logger}
 import com.paic.server.Messenger
 
 
-class SVN(val userName: String, val password: String, val url: String,val workfolder:File) {
+class SVN(val userName: String, val password: String, val url: String, val workfolder: File) {
   val log: Logger = LoggerFactory.getLogger(classOf[SVN])
 
   lazy val authenticationManager = SVNWCUtil.createDefaultAuthenticationManager(userName, password)
@@ -56,9 +56,9 @@ class SVN(val userName: String, val password: String, val url: String,val workfo
   }
 
 
-  def log(string: Any):Unit = {
-    log.info(string + "")
-    Messenger.message(string+"")
+  def log(string: Any): Unit = {
+    log.debug(string + "")
+    Messenger.message(string + "")
   }
 
   def diff(): List[Method] = {
@@ -83,7 +83,9 @@ class SVN(val userName: String, val password: String, val url: String,val workfo
   }
 
   def isSource(d: SVNDiffStatus) = {
-    d.getPath.startsWith("src/java/")
+
+    d.getPath.startsWith("src/java/") || d.getPath.startsWith("src/refactory/")
+
   }
 
   def isJava(d: SVNDiffStatus) = {
@@ -102,6 +104,10 @@ class SVN(val userName: String, val password: String, val url: String,val workfo
   }
 
   def onLocalContent(path: String, fun: InputStream => Unit) = {
+
+    //val path2:String=path.split("/").tail.mkString("/")
+
+
     val in = new FileInputStream(new File(workfolder, path))
     fun(in)
     try {
@@ -137,8 +143,9 @@ class SVN(val userName: String, val password: String, val url: String,val workfo
     DAVRepositoryFactory.setup
     val diffClient: SVNDiffClient = clientManager.getDiffClient
     var re: List[SVNDiffStatus] = List()
-    diffClient.doDiffStatus(parseURIEncodedJ, SVNRevision.create(lv), workfolder, SVNRevision.WORKING, SVNDepth.INFINITY, true, new ISVNDiffStatusHandler {
+    diffClient.doDiffStatus(workfolder, SVNRevision.BASE, workfolder, SVNRevision.WORKING, SVNDepth.INFINITY, true, new ISVNDiffStatusHandler {
       def handleDiffStatus(diffStatus: SVNDiffStatus) {
+        log(diffStatusToString(diffStatus))
         re = re :+ diffStatus
       }
     })
@@ -151,21 +158,27 @@ class SVN(val userName: String, val password: String, val url: String,val workfo
     val generator = new DefaultSVNDiffGenerator()
     generator.setDiffOptions(new SVNDiffOptions(true, true, true))
     val byteArrayOutputStream = new ByteArrayOutputStream
-    diffClient.doDiff(SVNURL.parseURIEncoded(url + path), SVNRevision.HEAD, new File(workfolder, path), SVNRevision.WORKING, false, false, byteArrayOutputStream)
-    val source = Source.fromBytes(byteArrayOutputStream.toByteArray)
 
+    //val path2:String=path.split("/").tail.mkString("/")
+    diffClient.doDiff(new File(workfolder, path), SVNRevision.BASE, new File(workfolder, path), SVNRevision.WORKING, true, false, byteArrayOutputStream)
+
+    val source = Source.fromBytes(byteArrayOutputStream.toByteArray)
     source.getLines.toList.flatMap {
       case l =>
-        val added = new Regex( """.*\+(\d+)\,(\d+).*""")
+        val added = new Regex( """.*\+(\d+)(\,(\d+))?.*""")
         if (l.startsWith("@@") && l.endsWith("@@")) {
           l match {
-            case added(begin, length) => {
+            case added(begin, null, null) => {
+              Some((begin.toInt, begin.toInt))
+            }
+            case added(begin, _, length) => {
               if (length.toInt > 0) {
                 Some((begin.toInt, begin.toInt + length.toInt - 1))
               }
               else
                 None
             }
+
             case _ => None
           }
         }
@@ -209,6 +222,6 @@ class SVN(val userName: String, val password: String, val url: String,val workfo
 
 }
 
-case class Diff (methods:List[Method])
+case class Diff(methods: List[Method])
 
 
