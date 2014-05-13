@@ -19,6 +19,20 @@ function addSelect(name) {
     window.searchers.push(searcher)
         refreshSearcherBox()
 }
+function addMarker(marker) {
+    var searcher=({
+            type:'marker',
+            fun:function (){
+                return marker.marker.fun()
+            },
+            marker:marker,
+            display:'<i class="fa fa-tags"/> '+marker.name,
+            style:{"background-color":marker.color},
+            id:_.uniqueId('searcher')
+        })
+        window.searchers.push(searcher)
+         refreshSearcherBox()
+}
 function addFocus(name) {
     var searcher={
                              type:'select',
@@ -55,7 +69,7 @@ function refreshSearcherBox(){
     $(".searcher-box").empty()
     _(window.searchers).each(function(s){
         var label=$("<span class='label searcher-label'/>")
-            .addClass("label-searcher-"+s.type)
+            .addClass("label-searcher-"+s.type).css(s.style?s.style:{})
             .html(s.display)
             .attr('data-id',s.id)
         $(".searcher-box").append(label).append(' ')
@@ -69,6 +83,7 @@ function refreshSearcherBox(){
 }
 function resetTable(){
     $(".nodes-table tbody tr").removeClass("selected").removeClass("displayed")
+    $(".nodes-table tbody td.markers").empty()
 }
 function applySearches(){
     resetTable()
@@ -87,9 +102,16 @@ function applySearches(){
     }
     //
     _(window.searchers).each(function(s){
-            _(s.fun()).each(function(name){
-                $(".nodes-table tbody tr[data-name=\""+name+"\"]").addClass(classes[s.type])
-            })
+            if(s.type !="marker"){
+                _(s.fun()).each(function(name){
+                    $(".nodes-table tbody tr[data-name=\""+name+"\"]").addClass(classes[s.type])
+                })
+            }else{
+                _(s.fun()).each(function(ma){
+                    var marker=$("<span class='label'/>").css(ma.css).text(ma.text)
+                    $(".nodes-table tbody tr[data-name=\""+ma.name+"\"] td.markers").append(marker)
+                })
+            }
     })
 
     selectedUpdate()

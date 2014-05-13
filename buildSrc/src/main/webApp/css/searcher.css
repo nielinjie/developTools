@@ -6,6 +6,11 @@
     background-color: #428bca;
 }
 
+.label-searcher-marker {
+    background-color: Gray;
+}
+
+
 .searcher-label {
     cursor: pointer;
 }
