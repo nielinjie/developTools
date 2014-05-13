@@ -38,6 +38,20 @@
             <h1>Hello, Domain!</h1>
             <button class="btn btn-default reload">Reload. <i class="fa fa-repeat fa-fw reload"></i></button>
             <button class="btn btn-default source">Source Editor. <i class="fa fa-pencil-square-o fa-fw"></i></button>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    Markers. <i class="fa fa-tags fa-fw"></i><span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu markers" role="menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                </ul>
+            </div>
+
         </header>
         <content class="col-lg-8 svg">
 
@@ -83,10 +97,15 @@
 <script src="./js/lib/d3.min.js"></script>
 <script src="./js/lib/d3.tip.v0.6.3.js"></script>
 
-<script src="./js/domain.js"></script>
-<script src="./js/graph.js"></script>
-<script src="./js/table.js"></script>
-<script src="./js/control.js"></script>
-<script src="./js/search.js"></script>
+<script src="./js/model/domain.js"></script>
+<script src="./js/model/graph.js"></script>
+<script src="./js/model/table.js"></script>
+<script src="./js/model/control.js"></script>
+<script src="./js/model/search.js"></script>
+
+<script src="./js/model/markers.js"></script>
+
+<script src="./js/testing/marker.js"></script>
+
 </body>
 </html>

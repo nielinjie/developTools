@@ -4,9 +4,11 @@ function updateTable(graph){
     _(graph.nodes).each(function(n){
         var tr=$("<tr/>").attr("data-name",n.name)
         tr.addClass("displayed")
-        tr.append($("<td>").text(n.name))
-        var td=$("<td>").append($("<span>").addClass("label").addClass("label-"+n.type).text(n.type =="function"?"F":"E"))
+
+        var td=$("<td/>").append($("<span>").addClass("label").addClass("label-"+n.type).text(n.type =="function"?"F":"E"))
         tr.append(td)
+        tr.append($("<td/>").text(n.name))
+        tr.append($("<td class='markers'/>"))
         var button=$("<button type='button' class='btn btn-default btn-xs'>Focus. </button>").attr("data-name",n.name)
         button.append($("<i/>").addClass("fa fa-crosshairs"))
         var td2=$("<td>").append(button)
@@ -43,8 +45,19 @@ function updateTable(graph){
                                 }
                               );
 }
-function filterTable(domain, filterFun){
-     var graph = {}
+function filterTable(domain){
+      updateTable(domainToGraph(domain))
+}
+
+function reorderTable(campFun) {
+    var tb=$(".nodes-table tbody")
+    var trs=tb.children("tr").detach().sort(function(la,lb){
+        return campFun($(la).attr("data-name"),$(lb).attr("data-name"))
+    })
+    tb.append(trs)
+}
+function domainToGraph(domain){
+    var graph = {}
         graph.nodes=[]
         _(domain.functions).each(
             function(f){
@@ -62,16 +75,5 @@ function filterTable(domain, filterFun){
                     })
                 }
             )
-     var filtered=filterFun?filterFun(graph):graph
-
-      updateTable(filtered)
+    return graph
 }
-
-function reorderTable(campFun) {
-    var tb=$(".nodes-table tbody")
-    var trs=tb.children("tr").detach().sort(function(la,lb){
-        return campFun($(la).attr("data-name"),$(lb).attr("data-name"))
-    })
-    tb.append(trs)
-}
-
