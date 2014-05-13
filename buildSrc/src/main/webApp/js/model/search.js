@@ -23,11 +23,11 @@ function addMarker(marker) {
     var searcher=({
             type:'marker',
             fun:function (){
-                return marker.marker.fun()
+                return marker.fun()
             },
             marker:marker,
-            display:'<i class="fa fa-tags"/> '+marker.name,
-            style:{"background-color":marker.color},
+            display:'<i class="fa fa-tags"/> '+marker.briefUI().text,
+            style:{"background-color":marker.briefUI().text},
             id:_.uniqueId('searcher')
         })
         window.searchers.push(searcher)

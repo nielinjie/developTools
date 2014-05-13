@@ -1,11 +1,12 @@
 window.markers.push(
-    {name:"Testing-Not Passed",color:"darkRed",marker:new TestingNotPassMarker()}
+    new TestingNotPassMarker()
 )
 window.markers.push(
-    {name:"Testing-Not Run",color:"#eea236",marker:new TestingNotRunMarker()}
+    new TestingNotRunMarker()
 )
 
 function  TestingNotPassMarker(){
+    this.name="Testing-Not Passed"
     this.result=[]
     var this_=this
     $.getJSON('./tests',function(data){
@@ -20,10 +21,22 @@ function  TestingNotPassMarker(){
             }:0
          }).compact().value()
     }
+    this.ui=function(){
+        var a=$("<a href='#'/>").text(this.name+" ").attr("data-name",this.name)
+        a.append($("<span class='label'>_</span>").css({'background-color':'darkRed'}))
+        return a
+    }
+    this.briefUI=function(){
+        return {
+            text: this_.name,
+            color: 'darkRed'
+        }
+    }
 }
 
 function  TestingNotRunMarker(){
     this.result=[]
+    this.name='Testing-Not Run'
     var this_=this
     $.getJSON('./tests',function(data){
             this_.result=data[0].results
@@ -37,4 +50,15 @@ function  TestingNotRunMarker(){
                      }:0
                   }).compact().value()
     }
+    this.ui=function(){
+            var a=$("<a href='#'/>").text(this.name+" ").attr("data-name",this.name)
+            a.append($("<span class='label'>_</span>").css({'background-color':'#eea236'}))
+            return a
+        }
+         this.briefUI=function(){
+                return {
+                    text: this_.name,
+                    color: '#eea236'
+                }
+            }
 }
