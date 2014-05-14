@@ -27,7 +27,7 @@ function addMarker(marker) {
             },
             marker:marker,
             display:'<i class="fa fa-tags"/> '+marker.briefUI().text,
-            style:{"background-color":marker.briefUI().text},
+            style:{"background-color":marker.briefUI().color},
             id:_.uniqueId('searcher')
         })
         window.searchers.push(searcher)

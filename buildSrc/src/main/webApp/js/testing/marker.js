@@ -22,8 +22,29 @@ function  TestingNotPassMarker(){
          }).compact().value()
     }
     this.ui=function(){
-        var a=$("<a href='#'/>").text(this.name+" ").attr("data-name",this.name)
-        a.append($("<span class='label'>_</span>").css({'background-color':'darkRed'}))
+        var a=$("<a class='list-group-item' href='#'/>").attr("data-name",this.name)
+        var head=$("<h4 class='list-group-item-heading'/>").text(this.name+" ")
+        head.append($("<span class='label'>_</span>").css({'background-color':'darkRed'}))
+        a.append(head)
+        var text=$("<div class='list-group-item-text'/>")
+        text.append($("<p/>").text("A marker/selector to find all function that not pass test."))
+        text.append($("<button class='btn btn-default btn-xs'/>").text("Mark").click(function(e){
+                         e.stopPropagation();
+                         var name=$(this).closest("a").attr("data-name")
+                         var marker=_(window.markers).findWhere({name:name})
+                         addMarker(marker)
+                         //TODO ??auto call when addXXX?
+                         applySearches()
+                     })).append(" / ").append($("<button class='btn btn-default btn-xs'/>").text("Select").click(function(e){
+                                    e.stopPropagation();
+                                    var name=$(this).closest("a").attr("data-name")
+                                    var marker=_(window.markers).findWhere({name:name})
+                                    addMarker(marker)
+                                    //TODO ??auto call when addXXX?
+                                    applySearches()
+                                }))
+        a.append(text)
+
         return a
     }
     this.briefUI=function(){
@@ -51,7 +72,7 @@ function  TestingNotRunMarker(){
                   }).compact().value()
     }
     this.ui=function(){
-            var a=$("<a href='#'/>").text(this.name+" ").attr("data-name",this.name)
+            var a=$("<a class='list-group-item' href='#'/>").text(this.name+" ").attr("data-name",this.name)
             a.append($("<span class='label'>_</span>").css({'background-color':'#eea236'}))
             return a
         }

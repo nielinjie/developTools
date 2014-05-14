@@ -10,18 +10,10 @@ window.markers=[]
 
 
 $(function(){
-    $(".dropdown-menu.markers").empty()
+    $(".dropdown-menu.markers div.list-group").empty()
     _(window.markers).each(function(m){
-        var li=$("<li/>")
-        li.append(m.ui())
-        $(".dropdown-menu.markers").append(li)
+        $(".dropdown-menu.markers div.list-group").append(m.ui())
     })
-    $(".dropdown-menu.markers li a").on("click",function(e){
-        var name=$(this).attr("data-name")
-        var marker=_(window.markers).findWhere({name:name})
-            addMarker(marker)
-            //TODO ??auto call when addXXX?
-            applySearches()
-    })
+
 })
 
