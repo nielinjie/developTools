@@ -7,6 +7,19 @@ $("#search-input").on("change",function(event){
     applySearches()
 })
 
+function addMultiSelect(names,displayName) {
+    var searcher=({
+        type:'select',
+        fun:function (){
+            return names
+        },
+        display:'<i class="fa fa-hand-o-up"/> '+displayName,
+        id:_.uniqueId('searcher')
+    })
+    window.searchers.push(searcher)
+        refreshSearcherBox()
+}
+
 function addSelect(name) {
     var searcher=({
         type:'select',

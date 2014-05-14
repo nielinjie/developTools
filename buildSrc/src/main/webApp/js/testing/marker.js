@@ -5,6 +5,61 @@ window.markers.push(
     new TestingNotRunMarker()
 )
 
+window.markerUIs.push(
+    (function(){
+            var a=$("<a class='list-group-item' href='#'/>").attr("data-name","Testing-Not Passed")
+            var head=$("<h4 class='list-group-item-heading'/>").text("Testing-Not Passed ")
+            head.append($("<span class='label'>_</span>").css({'background-color':'darkRed'}))
+            a.append(head)
+            var text=$("<div class='list-group-item-text'/>")
+            text.append($("<p/>").text("A marker/selector to find all function that not pass test."))
+            text.append($("<button class='btn btn-default btn-xs'/>").text("Mark").click(function(e){
+                             e.stopPropagation();
+                             var name=$(this).closest("a").attr("data-name")
+                             var marker=_(window.markers).findWhere({name:name})
+                             addMarker(marker)
+                             //TODO ??auto call when addXXX?
+                             applySearches()
+                         })).append(" / ").append($("<button class='btn btn-default btn-xs'/>").text("Select").click(function(e){
+                                        e.stopPropagation();
+                                        var name=$(this).closest("a").attr("data-name")
+                                        var marker=_(window.markers).findWhere({name:name})
+
+                                        addMultiSelect(_(marker.fun()).pluck("name"),"Testing-Not Passed")
+                                        //TODO ??auto call when addXXX?
+                                        applySearches()
+                                    }))
+            a.append(text)
+
+            return a})()
+)
+window.markerUIs.push(
+    (function(){
+            var a=$("<a class='list-group-item' href='#'/>").attr("data-name","Testing-Not Run")
+            var head=$("<h4 class='list-group-item-heading'/>").text("Testing-Not Run ")
+            head.append($("<span class='label'>_</span>").css({'background-color':'#eea236'}))
+            a.append(head)
+            var text=$("<div class='list-group-item-text'/>")
+            text.append($("<p/>").text("A marker/selector to find all function that not pass test."))
+            text.append($("<button class='btn btn-default btn-xs'/>").text("Mark").click(function(e){
+                             e.stopPropagation();
+                             var name=$(this).closest("a").attr("data-name")
+                             var marker=_(window.markers).findWhere({name:name})
+                             addMarker(marker)
+                             //TODO ??auto call when addXXX?
+                             applySearches()
+                         })).append(" / ").append($("<button class='btn btn-default btn-xs'/>").text("Select").click(function(e){
+                                        e.stopPropagation();
+                                        var name=$(this).closest("a").attr("data-name")
+                                        var marker=_(window.markers).findWhere({name:name})
+                                        addMultiSelect(_(marker.fun()).pluck("name"),"Testing-Not Run")
+                                        //TODO ??auto call when addXXX?
+                                        applySearches()
+                                    }))
+            a.append(text)
+
+            return a})()
+)
 function  TestingNotPassMarker(){
     this.name="Testing-Not Passed"
     this.result=[]
@@ -21,32 +76,7 @@ function  TestingNotPassMarker(){
             }:0
          }).compact().value()
     }
-    this.ui=function(){
-        var a=$("<a class='list-group-item' href='#'/>").attr("data-name",this.name)
-        var head=$("<h4 class='list-group-item-heading'/>").text(this.name+" ")
-        head.append($("<span class='label'>_</span>").css({'background-color':'darkRed'}))
-        a.append(head)
-        var text=$("<div class='list-group-item-text'/>")
-        text.append($("<p/>").text("A marker/selector to find all function that not pass test."))
-        text.append($("<button class='btn btn-default btn-xs'/>").text("Mark").click(function(e){
-                         e.stopPropagation();
-                         var name=$(this).closest("a").attr("data-name")
-                         var marker=_(window.markers).findWhere({name:name})
-                         addMarker(marker)
-                         //TODO ??auto call when addXXX?
-                         applySearches()
-                     })).append(" / ").append($("<button class='btn btn-default btn-xs'/>").text("Select").click(function(e){
-                                    e.stopPropagation();
-                                    var name=$(this).closest("a").attr("data-name")
-                                    var marker=_(window.markers).findWhere({name:name})
-                                    addMarker(marker)
-                                    //TODO ??auto call when addXXX?
-                                    applySearches()
-                                }))
-        a.append(text)
 
-        return a
-    }
     this.briefUI=function(){
         return {
             text: this_.name,
@@ -71,11 +101,7 @@ function  TestingNotRunMarker(){
                      }:0
                   }).compact().value()
     }
-    this.ui=function(){
-            var a=$("<a class='list-group-item' href='#'/>").text(this.name+" ").attr("data-name",this.name)
-            a.append($("<span class='label'>_</span>").css({'background-color':'#eea236'}))
-            return a
-        }
+
          this.briefUI=function(){
                 return {
                     text: this_.name,
