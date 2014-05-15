@@ -32,6 +32,10 @@ stroke: DarkRed;
   stroke: DarkGreen;
   stroke-width: 1.5px;
 }
+.markers circle{
+  stroke: none;
+  stroke-width: 1px;
+}
 
 .node.fixed ellipse{
   fill: DarkKhaki;

@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="./css/font-awesome.min.css">
 
+    <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/graph.css">
     <link rel="stylesheet" href="./css/table.css">
     <link rel="stylesheet" href="./css/searcher.css">
@@ -41,18 +42,16 @@
 
             <div class="btn-group">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    Markers. <i class="fa fa-tags fa-fw"></i><span class="caret"></span>
+                    Markers <i class="fa fa-tags fa-fw"></i> and Selectors <i class="fa fa-hand-o-up fa-fw"></i>. <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu markers" role="menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                </ul>
+                <div class="dropdown-menu markers" role="menu">
+                    <div class="list-group"></div>
+
+                </div>
             </div>
 
         </header>
+
         <content class="col-lg-8 svg">
 
         </content>
@@ -103,7 +102,7 @@
 <script src="./js/model/control.js"></script>
 <script src="./js/model/search.js"></script>
 
-<script src="./js/model/markers.js"></script>
+<script src="./js/markers/markers.js"></script>
 
 <script src="./js/testing/marker.js"></script>
 
