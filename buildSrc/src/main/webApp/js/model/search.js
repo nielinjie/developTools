@@ -114,18 +114,28 @@ function applySearches(){
         $(".nodes-table tbody tr").addClass("displayed")
     }
     //
-    _(window.searchers).each(function(s){
-            if(s.type !="marker"){
-                _(s.fun()).each(function(name){
-                    $(".nodes-table tbody tr[data-name=\""+name+"\"]").addClass(classes[s.type])
-                })
-            }else{
-                _(s.fun()).each(function(ma){
-                    var marker=$("<span class='label'/>").css(ma.css).text(ma.text)
-                    $(".nodes-table tbody tr[data-name=\""+ma.name+"\"] td.markers").append(marker)
-                })
-            }
-    })
+_(window.searchers).each(function(s){
+                if(s.type !="marker"){
+                    _(s.fun()).each(function(name){
+                        $(".nodes-table tbody tr[data-name=\""+name+"\"]").addClass(classes[s.type])
+                    })
+                }else{
+                    _(s.fun()).each(function(ma){
+                        var marker=$("<span class='label'/>").css(ma.css).text(ma.text)
+                        $(".nodes-table tbody tr[data-name=\""+ma.name+"\"] td.markers").append(marker)
+                    })
+                }})
 
     selectedUpdate()
+    _(window.searchers).each(function(s){
+                if(s.type !="marker"){
+                }else{
+                    _(s.fun()).each(function(ma){
+                        var text=d3.select("g[data-name=\""+ma.name+"\"] g")
+                        var c=text.selectAll("circle")
+                        var siblingCount = c[0]?c[0].length:0
+                        text.append("circle").style(ma.css).attr("r",5).attr("cx",siblingCount*5)
+                    })
+                }
+        })
 }

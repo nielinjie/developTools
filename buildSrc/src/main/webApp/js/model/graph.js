@@ -22,8 +22,8 @@ function toolbar(n){
 function update(graph) {
     $(".svg svg").remove()
     tip.hide()
-    var width = 800,
-        height = 800;
+    var width = 1600,
+        height = 1600;
 
     var force = d3.layout.force()
         .size([width-30, height-30])
@@ -35,8 +35,8 @@ function update(graph) {
 
     var svg = d3.select(".svg").append("svg")
         .attr("viewBox", "0 0 "+width+" "+height )
-        .attr("width", "100%")
-        .attr("height", "750px");
+        .attr("width", width)
+        .attr("height", height);
 
     svg.append('marker')
         .attr('id', 'arrow')
@@ -111,6 +111,7 @@ function update(graph) {
             .attr("dy", ".35em")
             .text(function(d) { return d.name });
 
+      node.append("g").attr("class","markers")
 
 
       node.call(tip)

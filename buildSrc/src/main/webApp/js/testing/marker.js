@@ -4,7 +4,7 @@ window.markers.push(
 window.markers.push(
     new TestingNotRunMarker()
 )
-
+//ui is split from marker it self, so that you can build ui for multiply marker.
 window.markerUIs.push(
     (function(){
             var a=$("<a class='list-group-item' href='#'/>").attr("data-name","Testing-Not Passed")
@@ -18,15 +18,12 @@ window.markerUIs.push(
                              var name=$(this).closest("a").attr("data-name")
                              var marker=_(window.markers).findWhere({name:name})
                              addMarker(marker)
-                             //TODO ??auto call when addXXX?
                              applySearches()
                          })).append(" / ").append($("<button class='btn btn-default btn-xs'/>").text("Select").click(function(e){
                                         e.stopPropagation();
                                         var name=$(this).closest("a").attr("data-name")
                                         var marker=_(window.markers).findWhere({name:name})
-
                                         addMultiSelect(_(marker.fun()).pluck("name"),"Testing-Not Passed")
-                                        //TODO ??auto call when addXXX?
                                         applySearches()
                                     }))
             a.append(text)
@@ -46,7 +43,6 @@ window.markerUIs.push(
                              var name=$(this).closest("a").attr("data-name")
                              var marker=_(window.markers).findWhere({name:name})
                              addMarker(marker)
-                             //TODO ??auto call when addXXX?
                              applySearches()
                          })).append(" / ").append($("<button class='btn btn-default btn-xs'/>").text("Select").click(function(e){
                                         e.stopPropagation();
@@ -71,7 +67,7 @@ function  TestingNotPassMarker(){
          return _(this_.result).chain().map(function(r){
             return (r.passed<r.run)?{
                 name:r.name,
-                css:{"background-color":"darkRed"},
+                css:{"background-color":"darkRed","fill":"darkRed"},
                 text:"Not Passed"
             }:0
          }).compact().value()
@@ -96,7 +92,7 @@ function  TestingNotRunMarker(){
           return _(this_.result).chain().map(function(r){
                      return (r.run<r.total)?{
                          name:r.name,
-                         css:{"background-color":"#eea236"},
+                         css:{"background-color":"#eea236","fill":"#eea236"},
                          text:"Not Run"
                      }:0
                   }).compact().value()
