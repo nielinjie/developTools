@@ -7,6 +7,12 @@ $("#search-input").on("change",function(event){
     applySearches()
 })
 
+$(".searcher-clean").on("click",function(e){
+    window.searchers=[]
+    refreshSearcherBox()
+    applySearches()
+})
+
 function addMultiSelect(names,displayName) {
     var searcher=({
         type:'select',

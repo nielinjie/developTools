@@ -13,6 +13,14 @@ $(".source").on("click",function(e){
     alert("Not Implemented...")
 })
 
+$(".n-table-side").on("mouseover",function(e){
+    $(".svg").removeClass('col-lg-8').addClass('col-lg-4')
+    $(".n-table-side").removeClass('col-lg-4').addClass('col-lg-8')
+}).on("mouseleave",function(e){
+      $(".svg").removeClass('col-lg-4').addClass('col-lg-8')
+      $(".n-table-side").removeClass('col-lg-8').addClass('col-lg-4')
+  })
+
 function reloadDomain(){
     $(".reload").addClass("disabled")
     $(".reload i").addClass("fa-spin")

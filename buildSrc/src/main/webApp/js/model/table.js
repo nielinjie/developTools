@@ -35,11 +35,11 @@ function updateTable(graph){
     $(".nodes-table tbody tr").hover(
                                 function() {
                                   $( this ).addClass( "hover" );
-                                  //TODO jquery don't support svg
+                                  //TODO effect on graph when table hover?
                                   $("g.node[data-name=\""+$(this).attr("data-name")+"\"]").addClass("hover")
                                 }, function() {
                                   $( this ).removeClass( "hover" );
-                                  //TODO jquery don't support svg
+                                  //TODO effect on graph when table hover?
                                   $("g.node[data-name=\""+$(this).attr("data-name")+"\"]").removeClass("hover")
 
                                 }
