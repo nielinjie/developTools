@@ -34,3 +34,6 @@ tr.selected td{
     height: 650px;
     overflow: auto;
 }
+td.markers span.label {
+    margin-left:3px;
+}

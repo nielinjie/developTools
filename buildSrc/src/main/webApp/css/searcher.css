@@ -13,8 +13,10 @@
 
 .searcher-label {
     cursor: pointer;
+    margin-top:4px;
 }
 
 .searcher-panel {
     margin-top:10px;
 }
+
