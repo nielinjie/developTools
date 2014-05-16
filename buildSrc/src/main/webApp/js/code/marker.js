@@ -6,23 +6,28 @@
 window.markerUIs.push(
     (function(){
             var a=$("<a class='list-group-item' href='#'/>")
-            var head=$("<h4 class='list-group-item-heading'/>").text("Have Package")
+            var head=$("<h4 class='list-group-item-heading'/>").text("Coding")
             a.append(head)
 
             var text=$("<div class='list-group-item-text'/>")
-            text.append($("<p/>").text("A marker/selector to find  function/entities that have (java-)package found. ").append($("<span class='label'>_</span>").css({'background-color':'darkGreen'})))
+            var p=$("<p/>")
+            .append($("<i class='fa  fa-square fa-fw'/>").css({'color':'darkGreen'}))
+            .append("To find Function/Entities that have related (java-)package(s) found. ")
 
-            .append($("<button class='btn btn-default btn-xs'><i class='fa fa-tags fa-fw'/></button>").click(function(e){
+            p.append($("<button class='btn btn-default btn-xs'><i class='fa fa-tags fa-fw'/></button>").click(function(e){
                 e.stopPropagation();
                 var marker=new HavePackageMarker()
                 addMarker(marker)
                 applySearches()
-             })).append(" / ").append($("<button class='btn btn-default btn-xs'><i class='fa fa-hand-o-up fa-fw'/></button>").click(function(e){
+             })).append($("<button class='btn btn-default btn-xs'><i class='fa fa-hand-o-up fa-fw'/></button>").click(function(e){
                 e.stopPropagation();
                 var marker=new HavePackageMarker()
                 addMultiSelect(_(marker.fun()).pluck("name"),"Have Package")
                 applySearches()
             }))
+
+            text.append(p)
+
             a.append(text)
 
             return a})()
