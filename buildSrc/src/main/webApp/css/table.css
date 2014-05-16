@@ -31,6 +31,6 @@ tr.selected td{
 }
 
 .table-flow{
-    height: 700px;
+    height: 650px;
     overflow: auto;
 }
