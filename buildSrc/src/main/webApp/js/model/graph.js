@@ -1,16 +1,6 @@
-  var tip=d3.tip()
-        .attr('class','d3-tip')
-        .offset([-5,0])
-        .html(function (n){
-                    return toolbar(n)
-                })
-function toolbar(n){
-        var button=$("<button/>").text('Focus. ').attr('type','button').addClass('btn btn-node-focus btn-default').attr('data-node-name',n.name)
-        button.append($("<i/>").addClass("fa fa-crosshairs"))
-        var group=$("<div/>").addClass('btn-group btn-group-xs')
-        group.append(button)
-        return group[0].outerHTML
-    }
+
+      var hideTimeout=null
+
 
     $(document).on('click','.btn-node-focus',function(e){
         var name=$(this).attr("data-node-name")
@@ -19,8 +9,33 @@ function toolbar(n){
         applySearches()
 
     })
+    .on("mouseover",'.btn-node-focus',function(e){
+        clearTimeout(hideTimeout)
+    }).on("mouseleave",'.btn-node-focus',function(e){
+        hideTimeout=
+                 setTimeout(function(){tip.hide()},300)
+    })
+    var tip=d3.tip()
+            .attr('class','d3-tip')
+            .offset([-5,0])
+            .html(function (n){
+                        return toolbar(n)
+                    })
+    function toolbar(n){
+            var button=$("<button/>").text('Focus. ').attr('type','button')
+                .addClass('btn btn-node-focus btn-default').attr('data-node-name',n.name)
+
+            button.append($("<i/>").addClass("fa fa-crosshairs"))
+            var group=$("<div/>").addClass('btn-group btn-group-xs')
+            group.append(button)
+            return group[0].outerHTML
+        }
 function update(graph) {
+
+
+
     $(".svg svg").remove()
+
     tip.hide()
     var width = 1600,
         height = 1600;
@@ -34,9 +49,11 @@ function update(graph) {
         .on("dragstart", dragstart);
 
     var svg = d3.select(".svg").append("svg")
-        .attr("viewBox", "0 0 "+width+" "+height )
-        .attr("width", width)
-        .attr("height", height);
+
+    svg.append("g").attr("class","viewport")
+//        .attr("viewBox", "0 0 "+width+" "+height )
+//        .attr("width", width)
+//        .attr("height", height);
 
     svg.append('marker')
         .attr('id', 'arrow')
@@ -74,8 +91,8 @@ function update(graph) {
 
     var distance={use:120,include:120,extend:120,g:50}
 
-    var link = svg.selectAll(".link"),
-        node = svg.selectAll(".node");
+    var link = svg.select(".viewport").selectAll(".link"),
+        node = svg.select(".viewport").selectAll(".node");
 
     force
           .nodes(graph.nodes)
@@ -116,12 +133,20 @@ function update(graph) {
 
       node.call(tip)
       .on('mouseover',function(n){
-          tip.hide(n)
+          clearTimeout(hideTimeout)
+          tip.hide()
           tip.show(n)
+      })
+      .on('mouseout',function(n){
+        hideTimeout=
+         setTimeout(function(){tip.hide()},300)
       })
 
 
 
+    var panZoomTiger = svgPanZoom('.svg svg',{minZoom: 0.2})
+    //300 =~= svg.width(750) /2
+    panZoomTiger.panBy({x:-width/2+300, y:-height/2+300})
 
     function tick() {
         link.attr('d', function(d) {
