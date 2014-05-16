@@ -1,4 +1,4 @@
-package com.paic.code.packaging
+package com.paic.code.pathing
 
 import java.io.File
 import com.paic.server.{JsonRestPlan, Repository}
@@ -11,24 +11,24 @@ import org.json4s.Extraction._
 
 import scala.collection.JavaConverters._
 
-case class PackageList(feToP:List[PackageFunctionEntity]){
-  def merge(b:PackageList)={
-    PackageList((this.feToP ++ b.feToP).distinct)
+case class PathingList(feToP:List[PathingFunctionEntity]){
+  def merge(b:PathingList)={
+    PathingList((this.feToP ++ b.feToP).distinct)
   }
 }
-case class PackageFunctionEntity(packageR:String,functionEntityName:String)
+case class PathingFunctionEntity(pathingR:String,functionEntityName:String)
 
-object PackageFunctionEntity{
-  def apply(line:String):PackageFunctionEntity={
+object PathingFunctionEntity{
+  def apply(line:String):PathingFunctionEntity={
     val reg="([\u4e00-\u9fa5\\w/]+):\\s*([\\w\\*\\./]+)".r
     val reg(fe,pr)=line
-    PackageFunctionEntity(pr,fe)
+    PathingFunctionEntity(pr,fe)
   }
 
 }
-object PackageList{
-  def apply(file:File):PackageList={
-    PackageList(Source.fromFile(file)(Codec("utf-8")).getLines().toList.map(PackageFunctionEntity(_)))
+object PathingList{
+  def apply(file:File):PathingList={
+    PathingList(Source.fromFile(file)(Codec("utf-8")).getLines().toList.map(PathingFunctionEntity(_)))
   }
 
 }
@@ -36,11 +36,11 @@ object PackageList{
 
 
 
-class PackageListRepository(val sourceFiles: List[File]) extends Repository {
-  def list:PackageList={
+class PathingListRepository(val sourceFiles: List[File]) extends Repository {
+  def list:PathingList={
     sourceFiles.map{
       case f=>
-        PackageList(f)
+        PathingList(f)
     }.reduceLeft(_.merge(_))
   }
 
@@ -63,6 +63,6 @@ class PackageListRepository(val sourceFiles: List[File]) extends Repository {
   }
 }
 
-class Plan(sourceFiles:List[File]) extends JsonRestPlan("package","packages",new PackageListRepository(sourceFiles)){
+class Plan(sourceFiles:List[File]) extends JsonRestPlan("pathing","pathings",new PathingListRepository(sourceFiles)){
   def this(sourceFiles:java.util.List[File])=this(sourceFiles.asScala.toList)
 }

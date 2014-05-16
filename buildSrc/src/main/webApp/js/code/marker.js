@@ -1,5 +1,5 @@
- $.getJSON('./packages',function(data){
-            window.data.packages=data[0].feToP
+ $.getJSON('./pathings',function(data){
+            window.data.pathings=data[0].feToP
         })
 //ui is split from marker it self, so that you can build ui for multiply marker.
 
@@ -12,17 +12,17 @@ window.markerUIs.push(
             var text=$("<div class='list-group-item-text'/>")
             var p=$("<p/>")
             .append($("<i class='fa  fa-square fa-fw'/>").css({'color':'darkGreen'}))
-            .append("To find Function/Entities that have related (java-)package(s) found. ")
+            .append("To find Function/Entities that have related code found. ")
 
             p.append($("<button class='btn btn-default btn-xs'><i class='fa fa-tags fa-fw'/></button>").click(function(e){
-                e.stopPropagation();
-                var marker=new HavePackageMarker()
+                e.stopPropagation()
+                var marker=new HaveCodeMarker()
                 addMarker(marker)
                 applySearches()
              })).append($("<button class='btn btn-default btn-xs'><i class='fa fa-hand-o-up fa-fw'/></button>").click(function(e){
-                e.stopPropagation();
-                var marker=new HavePackageMarker()
-                addMultiSelect(_(marker.fun()).pluck("name"),"Have Package")
+                e.stopPropagation()
+                var marker=new HaveCodeMarker()
+                addMultiSelect(_(marker.fun()).pluck("name"),"Have Code")
                 applySearches()
             }))
 
@@ -32,9 +32,9 @@ window.markerUIs.push(
 
             return a})()
 )
-function  HavePackageMarker(){
-    this.name="Have Package"
-    this.result=window.data.packages
+function  HaveCodeMarker(){
+    this.name="Have Code"
+    this.result=window.data.pathings
     var this_=this
 
     this.fun=function(){
@@ -42,7 +42,7 @@ function  HavePackageMarker(){
             return {
                 name:r.functionEntityName,
                 css:{"background-color":"darkGreen","fill":"darkGreen"},
-                text:"Package"
+                text:"Code"
             }
          }).compact().value()
     }
