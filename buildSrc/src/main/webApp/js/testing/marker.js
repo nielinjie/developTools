@@ -1,5 +1,5 @@
  $.getJSON('./tests',function(data){
-            window.testReport=data[0].results
+            window.data.testReport=data[0].results
         })
 //ui is split from marker it self, so that you can build ui for multiply marker.
 window.markerUIs.push(
@@ -55,7 +55,7 @@ window.markerUIs.push(
 )
 function  TestingNotPassMarker(){
     this.name="Testing-Not Passed"
-    this.result=window.testReport
+    this.result=window.data.testReport
     var this_=this
 
     this.fun=function(){
@@ -77,7 +77,7 @@ function  TestingNotPassMarker(){
 }
 
 function  TestingNotRunMarker(){
-    this.result=window.testReport
+    this.result=window.data.testReport
     this.name='Testing-Not Run'
     var this_=this
 
