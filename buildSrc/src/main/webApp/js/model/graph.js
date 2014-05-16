@@ -1,16 +1,6 @@
-  var tip=d3.tip()
-        .attr('class','d3-tip')
-        .offset([-5,0])
-        .html(function (n){
-                    return toolbar(n)
-                })
-function toolbar(n){
-        var button=$("<button/>").text('Focus. ').attr('type','button').addClass('btn btn-node-focus btn-default').attr('data-node-name',n.name)
-        button.append($("<i/>").addClass("fa fa-crosshairs"))
-        var group=$("<div/>").addClass('btn-group btn-group-xs')
-        group.append(button)
-        return group[0].outerHTML
-    }
+
+      var hideTimeout=null
+
 
     $(document).on('click','.btn-node-focus',function(e){
         var name=$(this).attr("data-node-name")
@@ -19,7 +9,31 @@ function toolbar(n){
         applySearches()
 
     })
+    .on("mouseover",'.btn-node-focus',function(e){
+        clearTimeout(hideTimeout)
+    }).on("mouseleave",'.btn-node-focus',function(e){
+        hideTimeout=
+                 setTimeout(function(){tip.hide()},300)
+    })
+    var tip=d3.tip()
+            .attr('class','d3-tip')
+            .offset([-5,0])
+            .html(function (n){
+                        return toolbar(n)
+                    })
+    function toolbar(n){
+            var button=$("<button/>").text('Focus. ').attr('type','button')
+                .addClass('btn btn-node-focus btn-default').attr('data-node-name',n.name)
+
+            button.append($("<i/>").addClass("fa fa-crosshairs"))
+            var group=$("<div/>").addClass('btn-group btn-group-xs')
+            group.append(button)
+            return group[0].outerHTML
+        }
 function update(graph) {
+
+
+
     $(".svg svg").remove()
 
     tip.hide()
@@ -119,8 +133,13 @@ function update(graph) {
 
       node.call(tip)
       .on('mouseover',function(n){
-          tip.hide(n)
+          clearTimeout(hideTimeout)
+          tip.hide()
           tip.show(n)
+      })
+      .on('mouseout',function(n){
+        hideTimeout=
+         setTimeout(function(){tip.hide()},300)
       })
 
 
