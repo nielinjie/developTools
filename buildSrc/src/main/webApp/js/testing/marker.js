@@ -1,9 +1,6 @@
-window.markers.push(
-    new TestingNotPassMarker()
-)
-window.markers.push(
-    new TestingNotRunMarker()
-)
+ $.getJSON('./tests',function(data){
+            window.testReport=data[0].results
+        })
 //ui is split from marker it self, so that you can build ui for multiply marker.
 window.markerUIs.push(
     (function(){
@@ -16,13 +13,13 @@ window.markerUIs.push(
             text.append($("<button class='btn btn-default btn-xs'/>").text("Mark").click(function(e){
                              e.stopPropagation();
                              var name=$(this).closest("a").attr("data-name")
-                             var marker=_(window.markers).findWhere({name:name})
+                             var marker=new TestingNotPassMarker()
                              addMarker(marker)
                              applySearches()
                          })).append(" / ").append($("<button class='btn btn-default btn-xs'/>").text("Select").click(function(e){
                                         e.stopPropagation();
                                         var name=$(this).closest("a").attr("data-name")
-                                        var marker=_(window.markers).findWhere({name:name})
+                                        var marker=new TestingNotPassMarker()
                                         addMultiSelect(_(marker.fun()).pluck("name"),"Testing-Not Passed")
                                         applySearches()
                                     }))
@@ -41,13 +38,13 @@ window.markerUIs.push(
             text.append($("<button class='btn btn-default btn-xs'/>").text("Mark").click(function(e){
                              e.stopPropagation();
                              var name=$(this).closest("a").attr("data-name")
-                             var marker=_(window.markers).findWhere({name:name})
+                             var marker=new TestingNotRunMarker()
                              addMarker(marker)
                              applySearches()
                          })).append(" / ").append($("<button class='btn btn-default btn-xs'/>").text("Select").click(function(e){
                                         e.stopPropagation();
                                         var name=$(this).closest("a").attr("data-name")
-                                        var marker=_(window.markers).findWhere({name:name})
+                                        var marker=new TestingNotRunMarker()
                                         addMultiSelect(_(marker.fun()).pluck("name"),"Testing-Not Run")
                                         //TODO ??auto call when addXXX?
                                         applySearches()
@@ -58,11 +55,9 @@ window.markerUIs.push(
 )
 function  TestingNotPassMarker(){
     this.name="Testing-Not Passed"
-    this.result=[]
+    this.result=window.testReport
     var this_=this
-    $.getJSON('./tests',function(data){
-            this_.result=data[0].results
-        })
+
     this.fun=function(){
          return _(this_.result).chain().map(function(r){
             return (r.passed<r.run)?{
@@ -82,12 +77,10 @@ function  TestingNotPassMarker(){
 }
 
 function  TestingNotRunMarker(){
-    this.result=[]
+    this.result=window.testReport
     this.name='Testing-Not Run'
     var this_=this
-    $.getJSON('./tests',function(data){
-            this_.result=data[0].results
-        })
+
     this.fun=function(){
           return _(this_.result).chain().map(function(r){
                      return (r.run<r.total)?{
