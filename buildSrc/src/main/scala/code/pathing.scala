@@ -1,7 +1,7 @@
 package com.paic.code.pathing
 
 import java.io.File
-import com.paic.server.{JsonRestPlan, Repository}
+import com.paic.server.{OneObjectRepository, JsonRestPlan, Repository}
 import scala.io.{Codec, Source}
 import org.json4s._
 import org.json4s.native.Serialization
@@ -36,8 +36,8 @@ object PathingList{
 
 
 
-class PathingListRepository(val sourceFiles: List[File]) extends Repository {
-  def list:PathingList={
+class PathingListRepository(val sourceFiles: List[File]) extends OneObjectRepository[PathingList] {
+  override def obj:PathingList={
     sourceFiles.map{
       case f=>
         PathingList(f)
@@ -46,21 +46,6 @@ class PathingListRepository(val sourceFiles: List[File]) extends Repository {
 
 
 
-  def query(query: Option[JObject]) = {
-    implicit val formats = Serialization.formats(NoTypeHints)
-    query match {
-      case None => List(decompose(list).asInstanceOf[JObject])
-      case _ => ???
-    }
-  }
-
-  def add(obj: JObject) = {
-    ???
-  }
-
-  def clear = {
-    ???
-  }
 }
 
 class Plan(sourceFiles:List[File]) extends JsonRestPlan("pathing","pathings",new PathingListRepository(sourceFiles)){
