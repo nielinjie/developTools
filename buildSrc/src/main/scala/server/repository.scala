@@ -3,6 +3,8 @@ package com.paic.server
 import org.json4s._
 import JsonDSL._
 import java.util.UUID
+import org.json4s.native.Serialization
+import org.json4s.Extraction._
 
 trait Repository {
   def add(obj:JObject):UUID
@@ -10,6 +12,25 @@ trait Repository {
   def clear():Unit
 }
 
+trait OneObjectRepository[T]  extends Repository {
+  def obj:T
+
+  def query(query: Option[JObject]) = {
+    implicit val formats = Serialization.formats(NoTypeHints)
+    query match {
+      case None => List(decompose(obj).asInstanceOf[JObject])
+      case _ => ???
+    }
+  }
+
+  def add(obj: JObject) = {
+    ???
+  }
+
+  def clear = {
+    ???
+  }
+}
 
 class MapRepository extends Repository{
   private var repository: scala.collection.mutable.Map[UUID, JObject] = scala.collection.mutable.Map.empty

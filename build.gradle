@@ -6,7 +6,9 @@ def workFolder=new File('..').getAbsoluteFile()
 def docFolder = new File(workFolder,'doc')
 def modelFiles = fileTree(dir: 'model',include:'*.model')
 def testingFiles= fileTree(dir:'testing',include:'*.testing')
+def pathingFiles= fileTree(dir:'code',include:'*.pathing')
 def packageFiles= fileTree(dir:'code',include:'*.package')
+def sourceRoots= [file('../src/java'),file('../src/refactory')]
 
 task lastVersion << {
     println new com.paic.developer.svn.SVN(svnUserName,svnpassword,svnUrl).lastVersion()
@@ -29,7 +31,9 @@ task server << {
 		def diffPlan = new com.paic.developer.code.DiffPlan(svnUserName,svnPassword,svnUrl,workFolder)
 		def dPlan=new com.paic.domain.Plan(modelFiles as List)
 		def tPlan=new com.paic.testing.Plan(testingFiles as List)
-		def pPlan=new com.paic.code.packaging.Plan(packageFiles as List)
-		def plans = [diffPlan,dPlan,tPlan,pPlan]
+		def pPlan=new com.paic.code.pathing.Plan(pathingFiles as List)
+		def paPlan=new com.paic.code.packages.Plan(packageFiles as List)
+		def sPlan=new com.paic.code.source.Plan(sourceRoots)
+		def plans = [diffPlan,dPlan,tPlan,pPlan,paPlan,sPlan]
     new com.paic.server.Server(plans,new File('.\\buildSrc\\src\\main\\webApp'),8080).service()
 }
