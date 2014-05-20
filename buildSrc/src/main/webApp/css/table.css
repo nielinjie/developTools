@@ -7,6 +7,11 @@
 
 }
 
+.nodes-table {
+    min-width: 500px;
+}
+
+
 .nodes-table tbody tr td {
   display:none;
 }
@@ -32,7 +37,8 @@ tr.selected td{
 
 .table-flow{
     height: 650px;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 td.markers span.label {
     margin-left:3px;
