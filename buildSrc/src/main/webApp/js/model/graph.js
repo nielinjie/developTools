@@ -1,6 +1,6 @@
 
       var hideTimeout=null
-
+      var graphZoom=0.7
 
     $(document).on('click','.btn-node-focus',function(e){
         var name=$(this).attr("data-node-name")
@@ -146,9 +146,12 @@ function update(graph) {
 
     var panZoomTiger = svgPanZoom('.svg svg',{minZoom: 0.2,onZoom: function(e){
         d3.selectAll('text').style('visibility',e<0.8?'hidden':'visible')
+        graphZoom=e
     }})
     //300 =~= svg.width(750) /2
     panZoomTiger.panBy({x:-width/2+300, y:-height/2+300})
+    panZoomTiger.zoom(graphZoom)
+//    graphZoom=panZoomTiger.getZoom()
 
     function tick() {
         link.attr('d', function(d) {
