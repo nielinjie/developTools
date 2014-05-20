@@ -1,7 +1,9 @@
 $.getJSON('./pathings',function(data){
             window.data.pathings=data[0].feToP
         })
-
+$.getJSON('./packages',function(data){
+            window.data.packages=data[0].feToP
+        })
 $.getJSON('./sources',function(data){
     window.data.sources=data[0].sources
 })
@@ -14,26 +16,13 @@ window.markerUIs.push(
             a.append(head)
 
             var text=$("<div class='list-group-item-text'/>")
-            var p=$("<p/>")
-            .append($("<i class='fa  fa-square fa-fw'/>").css({'color':'darkGreen'}))
-            .append("To find Function/Entities that have related code found. ")
-
-            p.append($("<button class='btn btn-default btn-xs'><i class='fa fa-tags fa-fw'/></button>").click(function(e){
-                e.stopPropagation()
-                var marker=new HaveCodeMarker()
-                addMarker(marker)
-                applySearches()
-             })).append($("<button class='btn btn-default btn-xs'><i class='fa fa-hand-o-up fa-fw'/></button>").click(function(e){
-                e.stopPropagation()
-                var marker=new HaveCodeMarker()
-                addMultiSelect(_(marker.fun()).pluck("name"),"Have Code")
-                applySearches()
-            }))
-
+            var p=window.markerUIUtils.para("Function/Entities that have related code found. ","darkGreen")
+            window.markerUIUtils.buttons(p,HaveCodeMarker,"Have Code")
             text.append(p)
-
+            var p2=window.markerUIUtils.para("Function/Entities that have related package. ","green")
+            window.markerUIUtils.buttons(p2,HavePackageMarker,"Have Package")
+            text.append(p2)
             a.append(text)
-
             return a})()
 )
 function  HaveCodeMarker(){
@@ -60,6 +49,28 @@ function  HaveCodeMarker(){
         return {
             text: this_.name,
             color: 'darkGreen'
+        }
+    }
+}
+function  HavePackageMarker(){
+    this.name="Have Package"
+    this.result=window.data.packages
+    var this_=this
+
+    this.fun=function(){
+         return _(this_.result).chain().map(function(r){
+            return {
+                name:r.functionEntityName,
+                css:{"background-color":"green","fill":"green"},
+                text:"Package"
+            }
+         }).compact().value()
+    }
+
+    this.briefUI=function(){
+        return {
+            text: this_.name,
+            color: 'green'
         }
     }
 }
