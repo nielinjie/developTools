@@ -1,6 +1,10 @@
- $.getJSON('./pathings',function(data){
+$.getJSON('./pathings',function(data){
             window.data.pathings=data[0].feToP
         })
+
+$.getJSON('./sources',function(data){
+    window.data.sources=data[0].sources
+})
 //ui is split from marker it self, so that you can build ui for multiply marker.
 
 window.markerUIs.push(
@@ -38,7 +42,12 @@ function  HaveCodeMarker(){
     var this_=this
 
     this.fun=function(){
-         return _(this_.result).chain().map(function(r){
+         return _(this_.result).chain().filter(function(r){
+            var pathRegex = r.pathingR.replace(/\*/g, "[^ ]*");
+            return    _(window.data.sources).any(function(sourcePath){
+                return sourcePath.match(pathRegex)
+            })
+         }).map(function(r){
             return {
                 name:r.functionEntityName,
                 css:{"background-color":"darkGreen","fill":"darkGreen"},

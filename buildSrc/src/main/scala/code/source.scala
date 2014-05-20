@@ -25,10 +25,13 @@ object SourceList {
     }))
   }
 }
-class Plan(sourceFiles: List[File]) extends JsonRestPlan("source", "sources", new OneObjectRepository[SourceList] {
+
+class SourceRepository(sourceFiles: List[File]) extends OneObjectRepository[SourceList] {
   def obj: SourceList = {
     SourceList.fromRoots(sourceFiles)
   }
-}) {
+}
+
+class Plan(sourceFiles: List[File]) extends JsonRestPlan("source", "sources", new SourceRepository(sourceFiles) ) {
   def this(sourceFiles: java.util.List[File]) = this(sourceFiles.asScala.toList)
 }
