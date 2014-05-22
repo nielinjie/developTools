@@ -36,6 +36,7 @@ function updateTable(graph){
                                 function() {
                                   $( this ).addClass( "hover" );
                                   //TODO effect on graph when table hover?
+                                  //TODO and in turn.
                                   $("g.node[data-name=\""+$(this).attr("data-name")+"\"]").addClass("hover")
                                 }, function() {
                                   $( this ).removeClass( "hover" );

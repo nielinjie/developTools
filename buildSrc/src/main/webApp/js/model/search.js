@@ -145,3 +145,4 @@ _(window.searchers).each(function(s){
                 }
         })
 }
+// TODO don't rebuild graph if possible.

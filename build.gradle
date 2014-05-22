@@ -8,7 +8,9 @@ def modelFiles = fileTree(dir: 'model',include:'*.model')
 def testingFiles= fileTree(dir:'testing',include:'*.testing')
 def pathingFiles= fileTree(dir:'code',include:'*.pathing')
 def packageFiles= fileTree(dir:'code',include:'*.package')
+def historyFiles= fileTree(dir:'history',include:'*.history')
 def sourceRoots= [file('../src/java'),file('../src/refactory')]
+def auditFiles=['jncss':fileTree(dir:'audit',include:'jncss.xml') as List]
 
 task lastVersion << {
     println new com.paic.developer.svn.SVN(svnUserName,svnpassword,svnUrl).lastVersion()
@@ -34,6 +36,8 @@ task server << {
 		def pPlan=new com.paic.code.pathing.Plan(pathingFiles as List)
 		def paPlan=new com.paic.code.packages.Plan(packageFiles as List)
 		def sPlan=new com.paic.code.source.Plan(sourceRoots)
-		def plans = [diffPlan,dPlan,tPlan,pPlan,paPlan,sPlan]
+		def aPlan=new com.paic.code.audit.Plan(auditFiles)
+		def hPlan=new com.paic.code.history.Plan(historyFiles as List)
+		def plans = [diffPlan,dPlan,tPlan,pPlan,paPlan,sPlan,aPlan,hPlan]
     new com.paic.server.Server(plans,new File('.\\buildSrc\\src\\main\\webApp'),8080).service()
 }

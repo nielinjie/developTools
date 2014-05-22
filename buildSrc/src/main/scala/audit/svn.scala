@@ -32,7 +32,7 @@ class SVN(val userName: String, val password: String, val url: String, val workf
   repository.setAuthenticationManager(authenticationManager)
   lazy val lv: Long = repository.getLatestRevision
   val options: ISVNOptions = SVNWCUtil.createDefaultOptions(true)
-  //TODO when to close manager, and, should we?
+  //TODO when to close manager, or, should we?
   val clientManager: SVNClientManager = SVNClientManager.newInstance(options, authenticationManager)
 
   def lastVersion: String = {

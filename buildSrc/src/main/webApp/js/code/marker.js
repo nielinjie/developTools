@@ -7,20 +7,57 @@ $.getJSON('./packages',function(data){
 $.getJSON('./sources',function(data){
     window.data.sources=data[0].sources
 })
+function wildcardToRegExp(w){
+    //Todo support more
+    return w.replace(/\*/g, "[^ ]*");
+}
 //ui is split from marker it self, so that you can build ui for multiply marker.
+
+//1. com.paic.eoa - dotStyle
+//2. com/paic/eoa - slashStyle
+//FIXME. For now, it is only for jnccs report - com.eoa.package.Method(P1,P2)
+function mapCodeToFunEn(dotStyle){
+    var normalized=toSlashStyle(methodToType(dotStyle))
+    var re=findByPackage(normalized)
+    return _(re).chain().union(findByPathing(normalized)).uniq().value()
+}
+function methodToType(dotStyle){
+    return _(dotStyle.split(".")).initial().join(".")
+}
+function toDotStyle(slashStyle){
+    return slashStyle.replace(new RegExp("/", "g"),".")
+}
+function toSlashStyle(dotStyle){
+    return dotStyle.replace(/\./g,"/")
+}
+
+function findByPackage(slashStyle){
+    return _(window.data.packages).find(function(package){
+        var pathRegex = wildcardToRegExp(toDotStyle(package.packagesR))
+        return slashStyle.match(pathRegex)
+    })
+}
+function findByPathing(slashStyle){
+    return _(window.data.pathings).find(function(pathI){
+        var pathRegex = wildcardToRegExp(pathI.pathingR)
+        return slashStyle.match(pathRegex)
+    })
+}
+//End fix me
+
 
 window.markerUIs.push(
     (function(){
             var a=$("<a class='list-group-item' href='#'/>")
-            var head=$("<h4 class='list-group-item-heading'/>").text("Coding")
+            var head=$("<h4 class='list-group-item-heading'/>").text("Coding - Structure")
             a.append(head)
 
             var text=$("<div class='list-group-item-text'/>")
             var p=window.markerUIUtils.para("Function/Entities that have related code found. ","darkGreen")
-            window.markerUIUtils.buttons(p,HaveCodeMarker,"Have Code")
+            window.markerUIUtils.buttons(p,function(){return new HaveCodeMarker()})
             text.append(p)
             var p2=window.markerUIUtils.para("Function/Entities that have related package. ","green")
-            window.markerUIUtils.buttons(p2,HavePackageMarker,"Have Package")
+            window.markerUIUtils.buttons(p2,function(){return new HavePackageMarker()})
             text.append(p2)
             a.append(text)
             return a})()
@@ -32,7 +69,7 @@ function  HaveCodeMarker(){
 
     this.fun=function(){
          return _(this_.result).chain().filter(function(r){
-            var pathRegex = r.pathingR.replace(/\*/g, "[^ ]*");
+            var pathRegex = wildcardToRegExp(r.pathingR)
             return    _(window.data.sources).any(function(sourcePath){
                 return sourcePath.match(pathRegex)
             })
