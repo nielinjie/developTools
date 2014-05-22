@@ -24,6 +24,7 @@ object AuditResult {
                 MethodScore(method.clazz.name+"."+method.name,int)
             }
         }.reduceLeft(_.++(_))))
+      //TODO other audit reports
     }
   }
 

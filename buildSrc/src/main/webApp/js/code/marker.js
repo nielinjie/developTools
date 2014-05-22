@@ -54,10 +54,10 @@ window.markerUIs.push(
 
             var text=$("<div class='list-group-item-text'/>")
             var p=window.markerUIUtils.para("Function/Entities that have related code found. ","darkGreen")
-            window.markerUIUtils.buttons(p,function(){return new HaveCodeMarker()},"Have Code")
+            window.markerUIUtils.buttons(p,function(){return new HaveCodeMarker()})
             text.append(p)
             var p2=window.markerUIUtils.para("Function/Entities that have related package. ","green")
-            window.markerUIUtils.buttons(p2,function(){return new HavePackageMarker()},"Have Package")
+            window.markerUIUtils.buttons(p2,function(){return new HavePackageMarker()})
             text.append(p2)
             a.append(text)
             return a})()
