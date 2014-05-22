@@ -5,15 +5,15 @@ window.markerUIs=[]
 //marker.ui - display in markers panel, to config and trigger marker
 
 window.markerUIUtils={
-    buttons:function(para,theMarker,selectText){
+    buttons:function(para,theMarkerFun,selectText){
         para.append($("<button class='btn btn-default btn-xs'><i class='fa fa-tags fa-fw'/></button>").click(function(e){
                         e.stopPropagation()
-                        var marker=new theMarker()
+                        var marker=theMarkerFun()
                         addMarker(marker)
                         applySearches()
                      })).append($("<button class='btn btn-default btn-xs'><i class='fa fa-hand-o-up fa-fw'/></button>").click(function(e){
                         e.stopPropagation()
-                        var marker=new theMarker()
+                        var marker=theMarkerFun()
                         addMultiSelect(_(marker.fun()).pluck("name"),selectText)
                         applySearches()
                     }))
