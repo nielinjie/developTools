@@ -38,7 +38,7 @@ function  HaveCCSIssueMarker(){
     this.result=window.data.audits.jncss
     this.line = 0.9
     var this_=this
-    var max=_(this.result).chain().pluck("score").max()
+    var max=_(this.result).chain().pluck("score").max().value()
     this.fun=function(){
          return _(this_.result).chain().filter(function(j){
             return j.score >= (this_.line >=1 ? this_.line : this_.line* max) //todo this not really 分位数

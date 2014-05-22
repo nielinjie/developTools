@@ -151,6 +151,7 @@ function update(graph) {
     //300 =~= svg.width(750) /2
     panZoomTiger.panBy({x:-width/2+300, y:-height/2+300})
     panZoomTiger.zoom(graphZoom)
+    //FIXME panzoom overrode node mouse event. drag/dbclick etc.
 //    graphZoom=panZoomTiger.getZoom()
 
     function tick() {

@@ -15,7 +15,7 @@ function wildcardToRegExp(w){
 
 //1. com.paic.eoa - dotStyle
 //2. com/paic/eoa - slashStyle
-//FIXME for now, it is only for jnccs report - com.eoa.package.Method(P1,P2)
+//FIXME. For now, it is only for jnccs report - com.eoa.package.Method(P1,P2)
 function mapCodeToFunEn(dotStyle){
     var normalized=toSlashStyle(methodToType(dotStyle))
     var re=findByPackage(normalized)
