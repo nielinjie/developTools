@@ -6,3 +6,5 @@ com/paic/eoa/core/bo/Authorization.java	M	2014-05-22	nielinjie001	81
 com/paic/eoa/core/bo/BO.java	M	2014-04-01	liuzhenghong001	80
 com/paic/eoa/core/bo/CachetDesc.java	M	2014-04-01	liuzhenghong001	80
 com/paic/eoa/core/bo/CachetTable.java	M	2014-04-01	liuzhenghong001	80
+com/paic/eoa/core/TaskCategory.java	M	2014-01-22	nielinjie001	70
+com/paic/eoa/core/bo/ActionBO.java	M	2014-01-22	nielinjie001	69
