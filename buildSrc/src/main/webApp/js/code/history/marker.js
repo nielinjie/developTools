@@ -10,7 +10,7 @@ window.markerUIs.push(
             var versions=2
             //todo support other marker cofing: author/date/frequent
             var text=$("<div class='list-group-item-text'/>")
-            var p=window.markerUIUtils.para("Function/Entities that have related CCS Changed. ","#eea236")
+            var p=window.markerUIUtils.para("Function/Entities that have related code Changed. ","#eea236")
             p.append("In versions: ").append($("<span class='form-inline form-inline'/>").append($("<select class='form-control form-inline input-sm'> \
                         <option value='1'>1</option> \
                         <option value='2' selected>2</option> \
