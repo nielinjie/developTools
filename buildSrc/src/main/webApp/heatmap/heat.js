@@ -96,15 +96,11 @@
     });
     return x$;
   };
-  window.minDate = (dateFormat = d3.time.format('%Y%m%d.%H%M%S'), _.chain(origindata).map(function(it){
-    return it.logs;
-  }).flatten().map(function(it){
-    return dateFormat.parse(it.date);
-  }).min().value());
+
   window.timeFilter = function(arg$){
     var timeFi, weight, dateFormat, touch, linear, pow, weightedTouch, touchs, maxTouch;
     timeFi = arg$.timeFi, weight = arg$.weight;
-    dateFormat = d3.time.format('%Y%m%d.%H%M%S');
+    dateFormat = d3.time.format('%Y-%m-%d');
     touch = function(it){
       var logs;
       logs = timeFi == null

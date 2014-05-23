@@ -100,10 +100,12 @@
 </div>
 </body>
 
-<script type="text/javascript" src="tAndC.js"></script>
+
 <script type="text/javascript" src="heat.js"></script>
 <script type="text/javascript" src="track.js"></script>
 <script type="text/javascript" src="control.js"></script>
+<script type="text/javascript" src="changeData.js"></script>
+
 <div id="help" class="hide">
     <div class="help-p">
         <p>
@@ -115,17 +117,13 @@
         <p>
             点击矩形，会弹出详细信息页面，显示文件修改在时间和开发人员两个维度上的分布。
         </p>
-        <p>
-            <em>页面仅负责从已经生成的数据生成图，数据准备工作须由手工和main.js负责，详细请见邮件列表中相关说明。</em>
-        </p>
 
-        <p>更多功能陆续更新中，如果您有任何问题和建议，请随时跟我联系。</p>
     </div>
 </div>
 <div id="help-split" class="hide">
     <div class="help-s">
         <p>使用<strong>划分参数</strong>可以从x, y两个维度来对数据进行划分。在x，y两个输入框输入对文件路径的正则表达式。
-            比如：输入<code>\\(service|view|controller|bo|dao)\\</code> <i class="fa fa-pencil-square-o send" data-code="\\(service|view|controller|bo|dao)\\"></i>，可以按照文件所在包划分，输入<code>(Mail|Common|File)</code><i class="fa fa-pencil-square-o send" data-code="(Mail|Common|File)"></i>则按照文件名中的关键字划分。如果留空，则相应维度上不进行划分。
+            比如：输入<code>/(service|view|controller|bo|dao)/</code> <i class="fa fa-pencil-square-o send" data-code="/(service|view|controller|bo|dao)/"></i>，可以按照文件所在包划分，输入<code>(Mail|Common|File)</code><i class="fa fa-pencil-square-o send" data-code="(Mail|Common|File)"></i>则按照文件名中的关键字划分。如果留空，则相应维度上不进行划分。
         </p>
         <p class="text-info text-right"><small>* 可以点击 <i class="fa fa-pencil-square-o"></i> 立即尝试。</small></p>
 
@@ -139,3 +137,4 @@
 </div>
 
 </html>
+<!--TODO integrate with domain concepts-->
