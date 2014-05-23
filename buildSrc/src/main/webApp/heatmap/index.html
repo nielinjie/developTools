@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/slider.css">
+
+    <link rel="stylesheet" href="css/main.css">
+
+    <script type="text/javascript" src="../js/lib/d3.min.js"></script>
+    <script type="text/javascript" src="../js/lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../js/lib/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/lib/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../js/lib/bootstrap-slider.js"></script>
+
+
+    <title>HEAT MAP</title>
+</head>
+
+<body>
+<div class="container">
+
+    <div class="jumbotron">
+        <div>
+            <h1>代码历史分析
+                <button type="button" class="btn help"><i class="fa fa-question-circle fa-lg fa-fw"></i>
+                </button>
+            </h1>
+            <div class="contact">
+                <i class="fa fa-envelope-o fa-fw"></i>
+                <a href="mailto:nielinjie001@paic.com.cn">nielinjie001@paic.com.cn</a>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="data-warning row hide">
+        <div class="col-lg-12">
+            <div class="alert alert-danger">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>没有找到所需数据。</strong>页面仅负责从已经生成的数据生成图，数据准备工作须由手工和main.js负责，详细请见邮件列表中相关说明。
+            </div>
+        </div>
+    </div>
+
+    <div class="control">
+        <div class="panel">
+            <div class="row">
+                <div class="col-lg-2">
+                    显示参数：
+                </div>
+                <div class="col-lg-6"><span class="name">修改时间过滤：</span>
+                    <span class="timeFilter">最早</span>
+                    <div id="slider"></div>
+
+                    <div class="time-control">
+                        <button class="btn left"><i class="fa fa-arrow-left"></i></button>
+                        <button class="btn right"><i class="fa fa-arrow-right"></i></button>
+                        <!--<button class="btn play"><i class="fa-play"></i></button>-->
+                    </div>
+                </div>
+                <div class="col-lg-4"><span class="name">时间加权：</span>
+                    <div class="btn-group wight" data-toggle="buttons">
+                        <label class="btn btn-default active"  data-kind="no">
+                            <input type="radio" data-kind="no"> 无
+                        </label>
+                        <label class="btn btn-default" data-kind="linear">
+                            <input type="radio" data-kind="linear"> 线性
+                        </label>
+                        <label class="btn btn-default" data-kind="pow">
+                            <input type="radio" data-kind="pow"> 指数
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="panel">
+            <div class="row">
+                <div class="col-lg-2">
+                    划分参数：
+                    <i class="fa fa-question-circle  help-split fa-lg fa-fw"></i>
+                </div>
+
+                <div class="col-lg-4">
+                    <input type="text" class='x form-control ' placeholder="x"/>
+                </div>
+                <div class="col-lg-4">
+                    <input type="text" class='y form-control' placeholder="y"/>
+                </div>
+                <div class="btn btn-primary redraw">重画</div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="drawing"></div>
+</div>
+</body>
+
+
+<script type="text/javascript" src="heat.js"></script>
+<script type="text/javascript" src="track.js"></script>
+<script type="text/javascript" src="control.js"></script>
+<script type="text/javascript" src="changeData.js"></script>
+
+<div id="help" class="hide">
+    <div class="help-p">
+        <p>
+            每个矩形代表一个java文件（这里近似认为一个类对应于于一个java文件），其面积代表类的复杂度，其颜色代表文件被修改的次数，越多的颜色越红。
+        </p>
+        <p>
+            鼠标在矩形上停留，会有tooltip出现，显示文件路径、复杂度和修改次数。
+        </p>
+        <p>
+            点击矩形，会弹出详细信息页面，显示文件修改在时间和开发人员两个维度上的分布。
+        </p>
+
+    </div>
+</div>
+<div id="help-split" class="hide">
+    <div class="help-s">
+        <p>使用<strong>划分参数</strong>可以从x, y两个维度来对数据进行划分。在x，y两个输入框输入对文件路径的正则表达式。
+            比如：输入<code>/(service|view|controller|bo|dao)/</code> <i class="fa fa-pencil-square-o send" data-code="/(service|view|controller|bo|dao)/"></i>，可以按照文件所在包划分，输入<code>(Mail|Common|File)</code><i class="fa fa-pencil-square-o send" data-code="(Mail|Common|File)"></i>则按照文件名中的关键字划分。如果留空，则相应维度上不进行划分。
+        </p>
+        <p class="text-info text-right"><small>* 可以点击 <i class="fa fa-pencil-square-o"></i> 立即尝试。</small></p>
+
+    </div>
+</div>
+<div id="file-pop" class="hide">
+    <div class="desc">I am a file</div>
+    <div class="file-track">
+
+    </div>
+</div>
+
+</html>
+<!--TODO integrate with domain concepts-->

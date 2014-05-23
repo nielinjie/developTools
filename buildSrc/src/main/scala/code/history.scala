@@ -44,3 +44,4 @@ class HistoryRepository(val sourceFiles: List[File]) extends OneObjectRepository
 class Plan(sourceFiles: List[File]) extends JsonRestPlan("history","historys",new HistoryRepository(sourceFiles)){
   def this(sourceFiles:java.util.List[File])=this(sourceFiles.asScala.toList)
 }
+//TODO legacy histoy import.

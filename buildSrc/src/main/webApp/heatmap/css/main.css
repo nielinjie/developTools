@@ -1,0 +1,24 @@
+.popover {
+  min-width: 650px; }
+
+.help {
+  margin-left: 10px; }
+
+.control .timeFilter {
+  width: 5em;
+  display: inline-block; }
+.control .time-control {
+  display: inline-block;
+  margin-left: 10px; }
+
+.contact {
+  margin-left: 10px; }
+
+.help-p {
+  font-size: 0.25em; }
+
+.desc {
+  font-size: 1.2em; }
+
+.panel {
+  padding: 10px; }
