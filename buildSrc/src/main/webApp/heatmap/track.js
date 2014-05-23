@@ -3,7 +3,7 @@
   var replace$ = ''.replace;
   window.track = function(path){
     var dateFormat, data, dates, authors, xs, ys, axisx, axisy, svg;
-    dateFormat = d3.time.format('%Y%m%d.%H%M%S');
+    dateFormat = d3.time.format('%Y-%m-%d');
     data = _(origindata).find(function(it){
       return replace$.call(it.path, /\\/g, '').replace(/\./g, '') === path;
     }).logs;

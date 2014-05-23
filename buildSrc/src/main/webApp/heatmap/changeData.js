@@ -1,6 +1,6 @@
 $.when($.getJSON("../historys"),$.getJSON('../audits')).done(function(r1,r2){
     window.origindata=changeData(r1[0][0].result,r2[0][0].result.jncss)
-    window.minDate = (dateFormat = d3.time.format('%Y%m%d.%H%M%S'), _.chain(window.origindata).map(function(it){
+    window.minDate = (dateFormat = d3.time.format('%Y-%m-%d'), _.chain(window.origindata).map(function(it){
         return it.logs;
       }).flatten().map(function(it){
         return dateFormat.parse(it.date);
