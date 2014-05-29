@@ -3,6 +3,7 @@
 
 $(function(){
     reloadDomain()
+    initGraph()
 })
 
 $(".reload").on("click",function(e){
@@ -31,6 +32,7 @@ function reloadDomain(){
         $(".reload").removeClass("disabled")
         $(".reload i").removeClass("fa-spin")
     })
+
 }
 
 

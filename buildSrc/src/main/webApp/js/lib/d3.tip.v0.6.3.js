@@ -17,7 +17,7 @@ d3.tip = function() {
 
   function tip(vis) {
     svg = getSVGNode(vis)
-    point = svg.createSVGPoint()
+    point = svg?svg.createSVGPoint():null
     document.body.appendChild(node)
   }
 
@@ -221,11 +221,14 @@ d3.tip = function() {
   }
 
   function getSVGNode(el) {
+
     el = el.node()
+    if(el){
     if(el.tagName.toLowerCase() == 'svg')
       return el
 
     return el.ownerSVGElement
+    }
   }
 
   // Private - gets the screen coordinates of a shape
