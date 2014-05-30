@@ -187,15 +187,17 @@
             y : -fheight / 2 + 300
         })
         panZoomTiger.zoom(graphZoom)
-        // FIXME panzoom overrode node mouse event. drag/dbclick etc.
-        // graphZoom=panZoomTiger.getZoom()
 
         function dblclick(d) {
             d3.select(this).classed("fixed", d.fixed = false);
+                        d3.event.sourceEvent.stopPropagation()
+
         }
 
         function dragstart(d) {
+
             d3.select(this).classed("fixed", d.fixed = true);
+                        d3.event.sourceEvent.stopPropagation()
         }
     }
 
