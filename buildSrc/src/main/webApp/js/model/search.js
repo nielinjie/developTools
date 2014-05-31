@@ -140,7 +140,14 @@ _(window.searchers).each(function(s){
                         var text=d3.select("g[data-name=\""+ma.name+"\"] g")
                         var c=text.selectAll("circle")
                         var siblingCount = c[0]?c[0].length:0
-                        text.append("circle").style(ma.css).attr("r",5).attr("cx",siblingCount*5)
+                        text.append("circle").style(ma.css)
+                          .attr("r",100)
+                          .style("opacity", 0.2)
+                          .attr("cx",siblingCount*5)
+                          .transition()
+                          .delay(function(d){return _.random(0, 400);})
+                          .attr("r",5)
+                          .style("opacity",0.8)
                     })
                 }
         })
