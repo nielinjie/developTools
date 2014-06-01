@@ -13,7 +13,7 @@ window.markerUIs.push(
 
             p.append("<br/>")
             p.append("By CCS: ")
-            window.markerUIUtils.buttons2(p,{"bubbler":function(){ return new CCSIssueBubble()}})
+            window.markerUIUtils.buttons(p,{"bubbler":function(){ return new CCSIssueBubble()}})
             p.append("<br/>")
             p.append("Filter by: CCS >= ")
             p.append($("<span class='form-inline form-inline'/>").append($("<select class='form-control form-inline input-sm'> \
@@ -33,7 +33,7 @@ window.markerUIs.push(
               marker.line=chosen
               return marker
             }
-            window.markerUIUtils.buttons2(p,{
+            window.markerUIUtils.buttons(p,{
               "marker":fun,
               "multiSelector":fun,
               "multiFocus":fun

@@ -27,7 +27,7 @@ window.markerUIs.push(
                 marker.versions=versions
                 return marker
             }
-            window.markerUIUtils.buttons2(p,{marker:fun,multiSelector:fun,multiFocus:fun})
+            window.markerUIUtils.buttons(p,{marker:fun,multiSelector:fun,multiFocus:fun})
             text.append(p)
 
             a.append(text)
