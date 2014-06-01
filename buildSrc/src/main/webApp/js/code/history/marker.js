@@ -11,7 +11,9 @@ window.markerUIs.push(
             //todo support other marker cofing: author/date/frequent
             var text=$("<div class='list-group-item-text'/>")
             var p=window.markerUIUtils.para("Function/Entities that have related code Changed. ","#eea236")
-            p.append("In versions: ").append($("<span class='form-inline form-inline'/>").append($("<select class='form-control form-inline input-sm'> \
+            p.append("<br/>")
+            p.append("Filter by: ")
+            p.append("In versions ").append($("<span class='form-inline form-inline'/>").append($("<select class='form-control form-inline input-sm'> \
                         <option value='1'>1</option> \
                         <option value='2' selected>2</option> \
                       </select>").click(function(e){
@@ -19,7 +21,7 @@ window.markerUIs.push(
                       }).change(function(e){
                         versions=$(this).val()
                       })))
-
+            p.append(" ")
             window.markerUIUtils.buttons(p,function(){
                 var marker = new ChangedMarker()
                 marker.versions=versions

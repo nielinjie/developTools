@@ -59,7 +59,7 @@ function addBubble(bubble) {
                 return bubble.fun()
             },
             marker:bubble,
-            display:'<i class="fa fa-tags"/> '+bubble.briefUI().text,
+            display:'<i class="fa fa-circle-o"/> '+bubble.briefUI().text,
             style:{"background-color":bubble.briefUI().color},
             id:_.uniqueId('searcher')
         })
@@ -78,6 +78,20 @@ function addFocus(name) {
                          }
     window.searchers.push(searcher)
     refreshSearcherBox()
+}
+function addMultiFocus(names,displayName){
+  var searcher=({
+      type:'select',
+      fun:function (){
+          return _(names).chain().map(function(n){
+            return findRelated(n)
+          }).flatten().cat(names).uniq().value()
+      },
+      display:'<i class="fa fa-crosshairsp"/> '+displayName,
+      id:_.uniqueId('searcher')
+  })
+  window.searchers.push(searcher)
+      refreshSearcherBox()
 }
 function addSearchText(text) {
     var searcher=({

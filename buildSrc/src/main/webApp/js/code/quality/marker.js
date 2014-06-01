@@ -11,14 +11,11 @@ window.markerUIs.push(
             var text=$("<div class='list-group-item-text'/>")
             var p=window.markerUIUtils.para("Function/Entities that have related CCS Issue. ","darkRed")
 
-
-            p.append($("<button class='btn btn-default btn-xs'><i class='fa fa-circle fa-fw'/></button>").click(function(e){
-                            e.stopPropagation()
-                            var bubble=new CCSIssueBubble()
-                            addBubble(bubble)
-                            applySearches()
-                         }))
-
+            p.append("<br/>")
+            p.append("By CCS: ")
+            window.markerUIUtils.buttons2(p,{"bubbler":function(){ return new CCSIssueBubble()}})
+            p.append("<br/>")
+            p.append("Filter by: CCS >= ")
             p.append($("<span class='form-inline form-inline'/>").append($("<select class='form-control form-inline input-sm'> \
                         <option value='5'>5</option> \
                         <option value='20'>20</option> \
@@ -30,12 +27,17 @@ window.markerUIs.push(
                       }).change(function(e){
                         chosen=$(this).val()
                       })))
-
-            window.markerUIUtils.buttons(p,function(){
-                var marker = new HaveCCSIssueMarker()
-                marker.line=chosen
-                return marker
-            })
+            p.append(" ")
+            var fun=function(){
+              var marker = new HaveCCSIssueMarker()
+              marker.line=chosen
+              return marker
+            }
+            window.markerUIUtils.buttons2(p,{
+              "marker":fun,
+              "multiSelector":fun,
+              "multiFocus":fun
+          })
 
 
 
