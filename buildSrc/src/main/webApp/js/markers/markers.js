@@ -21,6 +21,8 @@ window.markerUIUtils={
     buttons2:function(para,markFuns){
       //markFuns:
       //{
+      //TODO: bubbler or bubble
+
       //type: marker,multiSelector,bubbler,multiFocus
       //fun: marker/bubble class function
       //}

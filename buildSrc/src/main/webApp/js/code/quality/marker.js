@@ -81,11 +81,14 @@ function  CCSIssueBubble(){
       return _.reduce(list, function(memo, num){ return memo + num; }, 0);
     }
     var sums=_(this_.result).chain().map(function(j){
-       return {
-         name:mapCodeToFunEn(j.method)[0],
-         score:j.score
-       }
-    }).reject(function(ns){return !(ns.name)}).groupBy(function(ns){return ns.name.functionEntityName}).map(function(v,k){
+        var names=mapCodeToFunEn(j.method)
+        return _(names).map(function(n){
+          return {
+            name:n,
+            score:j.score
+          }
+        })
+    }).flatten().reject(function(ns){return !(ns.name)}).groupBy(function(ns){return ns.name.functionEntityName}).map(function(v,k){
       return {
         name:k,
         score:sum(_(v).pluck("score"))

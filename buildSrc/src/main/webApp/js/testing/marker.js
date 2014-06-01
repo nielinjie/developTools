@@ -12,10 +12,12 @@ window.markerUIs.push(
 
                     var text=$("<div class='list-group-item-text'/>")
                     var p=window.markerUIUtils.para("Functions that not pass test. ","darkRed")
-                    window.markerUIUtils.buttons(p,function(){return new TestingNotPassMarker()})
+                    var fun=function(){return new TestingNotPassMarker()}
+                    window.markerUIUtils.buttons2(p,{marker:fun,multiSelector:fun,multiFocus:fun})
                     text.append(p)
                     var p2=window.markerUIUtils.para("Functions that not run test. ","#eea236")
-                    window.markerUIUtils.buttons(p2,function(){return new TestingNotRunMarker()})
+                    var fun2=function(){return new TestingNotRunMarker()}
+                    window.markerUIUtils.buttons2(p2,{marker:fun2,multiSelector:fun2,multiFocus:fun2})
                     text.append(p2)
                     a.append(text)
                     return a})()

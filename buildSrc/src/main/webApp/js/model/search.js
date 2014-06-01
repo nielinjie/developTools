@@ -87,7 +87,7 @@ function addMultiFocus(names,displayName){
             return findRelated(n)
           }).flatten().cat(names).uniq().value()
       },
-      display:'<i class="fa fa-crosshairsp"/> '+displayName,
+      display:'<i class="fa fa-crosshairs"/> '+displayName,
       id:_.uniqueId('searcher')
   })
   window.searchers.push(searcher)
@@ -149,7 +149,8 @@ function applySearches(){
     }
     //
 _(window.searchers).each(function(s){
-                if(s.type !="marker"){
+
+                if(s.type !="marker"  && s.type !="bubble"){
                     _(s.fun()).each(function(name){
                         $(".nodes-table tbody tr[data-name=\""+name+"\"]").addClass(classes[s.type])
                     })

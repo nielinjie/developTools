@@ -22,11 +22,12 @@ window.markerUIs.push(
                         versions=$(this).val()
                       })))
             p.append(" ")
-            window.markerUIUtils.buttons(p,function(){
+            var fun=function(){
                 var marker = new ChangedMarker()
                 marker.versions=versions
                 return marker
-            })
+            }
+            window.markerUIUtils.buttons2(p,{marker:fun,multiSelector:fun,multiFocus:fun})
             text.append(p)
 
             a.append(text)
