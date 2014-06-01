@@ -52,6 +52,20 @@ function addMarker(marker) {
         window.searchers.push(searcher)
          refreshSearcherBox()
 }
+function addBubble(bubble) {
+    var searcher=({
+            type:'bubble',
+            fun:function (){
+                return bubble.fun()
+            },
+            marker:bubble,
+            display:'<i class="fa fa-tags"/> '+bubble.briefUI().text,
+            style:{"background-color":bubble.briefUI().color},
+            id:_.uniqueId('searcher')
+        })
+        window.searchers.push(searcher)
+         refreshSearcherBox()
+}
 function addFocus(name) {
     var searcher={
                              type:'select',
@@ -134,8 +148,8 @@ _(window.searchers).each(function(s){
 
     selectedUpdate()
     _(window.searchers).each(function(s){
-                if(s.type !="marker"){
-                }else{
+                if(s.type =="marker"){
+
                     _(s.fun()).each(function(ma){
                         var text=d3.select("g[data-name=\""+ma.name+"\"] g")
                         var c=text.selectAll("circle")
@@ -149,6 +163,19 @@ _(window.searchers).each(function(s){
                           .attr("r",5)
                           .style("opacity",0.8)
                     })
+                }else if (s.type =="bubble"){
+                  _(s.fun()).each(function(ma){
+                      var r=ma.factor*100
+                      var g=d3.select("g[data-name=\""+ma.name+"\"]")
+                      g.append("circle").classed("bubble",true).style(ma.css)
+                        .style("opacity", 0.2)
+                        .attr("r",5)
+                        .transition()
+                        .delay(function(d){return _.random(0, 400);})
+                        .duration(function(d){return _.random(400, 800);})
+                        .attr("r",r)
+                        .style("opacity",0.4)
+                  })
                 }
         })
 }

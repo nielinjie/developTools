@@ -10,6 +10,15 @@ window.markerUIs.push(
             var chosen=0.9
             var text=$("<div class='list-group-item-text'/>")
             var p=window.markerUIUtils.para("Function/Entities that have related CCS Issue. ","darkRed")
+
+
+            p.append($("<button class='btn btn-default btn-xs'><i class='fa fa-circle fa-fw'/></button>").click(function(e){
+                            e.stopPropagation()
+                            var bubble=new CCSIssueBubble()
+                            addBubble(bubble)
+                            applySearches()
+                         }))
+
             p.append($("<span class='form-inline form-inline'/>").append($("<select class='form-control form-inline input-sm'> \
                         <option value='5'>5</option> \
                         <option value='20'>20</option> \
@@ -27,6 +36,9 @@ window.markerUIs.push(
                 marker.line=chosen
                 return marker
             })
+
+
+
             text.append(p)
 
             a.append(text)
@@ -55,6 +67,45 @@ function  HaveCCSIssueMarker(){
     this.briefUI=function(){
         return {
             text: this_.name+" - "+this_.line,
+            color: 'darkRed'
+        }
+    }
+}
+function  CCSIssueBubble(){
+    this.name="CCS Bubble"
+    this.result=window.data.audits.jncss
+    var this_=this
+    function sum(list){
+      return _.reduce(list, function(memo, num){ return memo + num; }, 0);
+    }
+    var sums=_(this_.result).chain().map(function(j){
+       return {
+         name:mapCodeToFunEn(j.method)[0],
+         score:j.score
+       }
+    }).reject(function(ns){return !(ns.name)}).groupBy(function(ns){return ns.name.functionEntityName}).map(function(v,k){
+      return {
+        name:k,
+        score:sum(_(v).pluck("score"))
+      }
+    }).value()
+    var max= _(sums).chain().pluck("score").max().value()
+    var min= _(sums).chain().pluck("score").min().value()
+
+    this.fun=function(){
+
+         return _(sums).map(function(nameScore){
+            return {
+                            name:nameScore.name,
+                            css:{"background-color":"darkRed","fill":"darkRed"},
+                            text:"CCS - "+ nameScore.score,
+                            factor:nameScore.score/max
+                        }
+         })
+    }
+    this.briefUI=function(){
+        return {
+            text: this_.name+" - "+"["+min+", "+max+"]",
             color: 'darkRed'
         }
     }

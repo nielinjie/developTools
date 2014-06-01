@@ -20,13 +20,13 @@ stroke: DarkRed;
 .node.hover circle{
     fill:DarkKhaki
 }
-.node ellipse{
+.node ellipse.foe{
   cursor: move;
   fill: LightYellow;
   stroke: DarkRed;
   stroke-width: 1.5px;
 }
-.node circle{
+.node circle.foe{
   cursor: move;
   fill: LightGreen;
   stroke: DarkGreen;

@@ -159,7 +159,7 @@
                             "http://www.w3.org/2000/svg", "ellipse") : document
                             .createElementNS("http://www.w3.org/2000/svg",
                                     "circle")
-                }).attr("ry", 12).attr("rx", 20).attr("r", 12)
+                }).attr("ry", 12).attr("rx", 20).attr("r", 12).classed("foe",true)
 
         nodeG.append("text").attr("dx", 22).attr("dy", ".35em").text(
                 function(d) {
@@ -168,6 +168,7 @@
 
         node.selectAll("g.markers").remove()
         node.append("g").attr("class", "markers")
+        node.selectAll(".bubble").remove()
 
         node.call(tip).on('mouseover', function(n) {
             clearTimeout(hideTimeout)

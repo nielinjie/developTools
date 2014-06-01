@@ -19,7 +19,7 @@ function wildcardToRegExp(w){
 function mapCodeToFunEn(dotStyle){
     var normalized=toSlashStyle(methodToType(dotStyle))
     var re=findByPackage(normalized)
-    return _(re).chain().union(findByPathing(normalized)).uniq().value()
+    return _(re).chain().union(findByPathing(normalized)).compact().uniq().value()
 }
 function methodToType(dotStyle){
     return _(dotStyle.split(".")).initial().join(".")
