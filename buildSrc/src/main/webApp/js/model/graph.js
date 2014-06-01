@@ -179,8 +179,9 @@
                 tip.hide()
             }, 300)
         })
-
-        force.start()
+        if(removedNames.length!=0 || !addNodes.length==0){
+          force.start()
+        }
 
         // 300 =~= svg.width(750) /2
         panZoomTiger.pan({
