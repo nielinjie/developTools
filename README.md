@@ -7,8 +7,17 @@
 * server - scala unfiltered为基础的web server。model和diff有些展示逻辑可以运行在这个上面。
 
 下面详细说明。（TODO）
+
 ### Model
 
+参见下面的blog以及后续篇章：
+
+[给老爷爷系统（二）：如何描述系统？（一）](http://nielinjie.github.io/blog/2014/06/05/view/)
+
 ### Diff
+
+参见下面的blog：
+
+[给老爷爷系统（一）：代码质量守则和工具](http://nielinjie.github.io/blog/2014/05/26/quality/)
 
 ### Server
