@@ -1,4 +1,4 @@
-package com.paic.domain
+package domain
 
 import java.io.File
 import com.paic.server.JsonRestPlan

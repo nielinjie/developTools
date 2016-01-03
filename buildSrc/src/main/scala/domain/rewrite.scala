@@ -1,38 +1,37 @@
-package com.paic.domain
+package domain
 
 import org.kiama.rewriting.Rewriter._
 import org.kiama.output.PrettyPrinter
-import org.kiama.rewriting.Strategy
 import scala.collection.mutable.MutableList
-import com.paic.domain
 import org.slf4j.{Logger, LoggerFactory}
+import domain.dsl.{FunctionFirstDSL}
 
 
 object Rewrite {
-  def rewrite(domain:DSL.Domain):Graph.Domain = {
-    val funcs:MutableList[Graph.Function]=MutableList()
-    val refs:MutableList[Graph.Ref]=MutableList()
-    val entities:MutableList[Graph.Entity]=MutableList()
+  def rewrite(domain:FunctionFirstDSL.Domain):Domain = {
+    val functions:MutableList[Function]=MutableList()
+    val refs:MutableList[Ref]=MutableList()
+    val entities:MutableList[Entity]=MutableList()
     val funcFind= query {
-      case f@DSL.Function(rs_,es,comments,name,alias) =>
+      case f@FunctionFirstDSL.Function(rs_,es,comments,name,alias) =>
         refs.++= (rs_.map {
-          case r:DSL.Ref =>
-              Graph.Ref(Graph.Id(f.name),Graph.Id(r.to.name),r.typ)
+          case r:_root_.domain.dsl.Ref =>
+              Ref(Id(f.name),Id(r.to.name),r.typ)
         })
         refs.++= (es.map {
-          case e:DSL.Entity =>
-            Graph.Ref(Graph.Id(f.name),Graph.Id(e.name),"use")
+          case e:FunctionFirstDSL.Entity =>
+            Ref(Id(f.name),Id(e.name),"use")
         })
         entities.++= ( es.map {
-          case e:DSL.Entity =>
-            Graph.Entity(e.name,e.alias)
+          case e:FunctionFirstDSL.Entity =>
+            Entity(e.name,e.alias)
         })
-        funcs.+= (Graph.Function(f.name,f.comments,f.alias))
+        functions.+= (Function(f.name,f.comments,f.alias))
     }
 
     val top=everywherebu(funcFind)
     top(domain).get
-    Graph.Domain(funcs.toList,entities.toList,refs.toList)
+    Domain(functions.toList,entities.toList,refs.toList)
   }
 }
 object Printer extends PrettyPrinter{
@@ -40,5 +39,10 @@ object Printer extends PrettyPrinter{
 
   def print(any:Any) ={
     log.debug(super.pretty_any(any).toString)
+  }
+}
+object SimplePrinter extends PrettyPrinter{
+  def print(any:Any)={
+    println(super.pretty_any(any).toString)
   }
 }

@@ -7,8 +7,8 @@ import scala.collection.JavaConverters._
 case class SourceList(sources: List[String])
 
 object SourceList {
-  def recursiveListFiles(f: File): Array[File] = {
-    val these = f.listFiles
+  def recursiveListFiles(f: File): List[File] = {
+    val these:List[File] = Option(f.listFiles).map(_.toList).getOrElse(Nil)
     these ++ these.filter(_.isDirectory).flatMap(recursiveListFiles)
   }
   def fromRoots(roots:List[File]):SourceList={
@@ -18,7 +18,7 @@ object SourceList {
     SourceList(roots.flatMap({
       r:File =>
         val ru=r.toURI
-        recursiveListFiles(r).toList.filter(good).map({
+        recursiveListFiles(r).filter(good).map({
           f:File =>
              ru.relativize(f.toURI).getPath
         })

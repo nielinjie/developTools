@@ -23,7 +23,7 @@ dependencies {
     compile 'com.googlecode.kiama:kiama_2.10:1.5.2'
     compile 'org.scalaz:scalaz-core_2.10:7.0.3'
     compile 'org.slf4j:slf4j-api:1.7.6'
-     compile 'dom4j:dom4j:1.4'
+    compile 'dom4j:dom4j:1.4'
 }
 sourceSets.main.scala.srcDir "src/main/java"
 sourceSets.main.java.srcDirs = []

@@ -1,27 +1,11 @@
-package com.paic.domain
-
-object DSL {
-
-  case class Domain(function: List[Function])
-
-  case class Function(ref: List[Ref], entities: List[Entity], comments: List[String], name: String, alias: List[String] = List()) extends Referable
-
-  case class Entity(name: String, alias: List[String] = List()) extends Referable
-
-  case class Id(name: String) extends Referable
-
-  case class Ref(to: Referable, typ: String)
-
-  trait Referable {
-    val name: String
-  }
+package domain
 
 
-}
-
-object Graph {
 
   case class Domain(functions: List[Function], entities: List[Entity], refs: List[Ref]) {
+    def distinctBy[T, B](list: List[T], fun: T => B): List[T] = {
+      Map[B, T](list.map(fun).zip(list).toList: _*).map(_._2).toList
+    }
     def normalize: Domain = {
       this.copy(
         functions = distinctBy(this.functions, {
@@ -51,7 +35,3 @@ object Graph {
 
 
 
-  def distinctBy[T, B](list: List[T], fun: T => B): List[T] = {
-    Map[B, T](list.map(fun).zip(list).toList: _*).map(_._2).toList
-  }
-}

@@ -1,5 +1,6 @@
-package com.paic.domain
+package domain
 
+import domain.parse.Parser
 import org.json4s._
 import org.json4s.Extraction.decompose
 import org.json4s.native.Serialization
@@ -11,12 +12,12 @@ import scala.io.{Codec, Source}
 import scala.collection.JavaConverters._
 
 object Json {
-  def json(domain: Graph.Domain): String = {
+  def json(domain: Domain): String = {
     implicit val formats = Serialization.formats(NoTypeHints)
     write(domain)
   }
 
-  def toJValue(domain: Graph.Domain): JObject = {
+  def toJValue(domain: Domain): JObject = {
     implicit val formats = Serialization.formats(NoTypeHints)
     decompose(domain).asInstanceOf[JObject]
   }
@@ -24,14 +25,14 @@ object Json {
 
 
 class DomainRepository(val sourceFiles: List[File]) extends Repository {
-  def domains:Graph.Domain={
+  def domains:Domain={
     sourceFiles.map{
       case f=>
         domain(f)
     }.reduceLeft(_.merge(_))
   }
 
-  def domain(sourceFile:File): Graph.Domain = {
+  def domain(sourceFile:File): Domain = {
     val pre = Preprocessor.preProcess(Source.fromFile(sourceFile)(Codec("utf-8")).mkString)
     val parsed = Parser.parseAll(Parser.domain, pre)
     parsed.map {

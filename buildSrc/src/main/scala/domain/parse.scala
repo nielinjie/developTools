@@ -1,9 +1,12 @@
-package com.paic.domain
+package domain.parse
 
-import DSL._
 import scala.util.parsing.combinator._
+import domain.dsl._
+import domain.dsl.FunctionFirstDSL._
+
 
 object Parser extends RegexParsers {
+
   def COMMA = ","
 
   def Q = "{"
