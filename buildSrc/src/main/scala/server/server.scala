@@ -1,7 +1,7 @@
 package com.paic.server
 
 import java.io.File
-import org.jboss.netty.channel.ChannelHandler
+import io.netty.channel.ChannelHandler
 import scala.collection.JavaConverters._
 
 
@@ -11,7 +11,9 @@ class Server(val handlers: List[ChannelHandler], val resource: File, val port: I
     handlers.foldLeft(unfiltered.netty.Http(port))({
       (http,handle)=>
         http.handler(handle)
-    }).handler(Messenger.plan).resources(resource.getAbsoluteFile.getCanonicalFile.toURI.toURL)
+    })
+      //.handler(Messenger.plan)
+      .resources(resource.getAbsoluteFile.getCanonicalFile.toURI.toURL)
       .run
   }
 }

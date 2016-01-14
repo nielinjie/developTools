@@ -58,7 +58,7 @@ class SVN(val userName: String, val password: String, val url: String, val workf
 
   def log(string: Any): Unit = {
     log.debug(string + "")
-    Messenger.message(string + "")
+//    Messenger.message(string + "")
   }
 
   def diff(): List[Method] = {

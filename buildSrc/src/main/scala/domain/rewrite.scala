@@ -1,5 +1,6 @@
 package domain
 
+import org.kiama.==>
 import org.kiama.rewriting.Rewriter._
 import org.kiama.output.PrettyPrinter
 import scala.collection.mutable.MutableList
@@ -12,8 +13,9 @@ object Rewrite {
     val functions:MutableList[Function]=MutableList()
     val refs:MutableList[Ref]=MutableList()
     val entities:MutableList[Entity]=MutableList()
-    val funcFind= query {
+    val funcFind= query( {
       case f@FunctionFirstDSL.Function(rs_,es,comments,name,alias) =>
+
         refs.++= (rs_.map {
           case r:_root_.domain.dsl.Ref =>
               Ref(Id(f.name),Id(r.to.name),r.typ)
@@ -26,8 +28,9 @@ object Rewrite {
           case e:FunctionFirstDSL.Entity =>
             Entity(e.name,e.alias)
         })
+
         functions.+= (Function(f.name,f.comments,f.alias))
-    }
+    } : FunctionFirstDSL.Function ==> Unit)
 
     val top=everywherebu(funcFind)
     top(domain).get
