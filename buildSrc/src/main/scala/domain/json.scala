@@ -1,6 +1,6 @@
 package domain
 
-import domain.parse.Parser
+import domain.parse.{Printer, Rewrite, Preprocessor, Parser}
 import org.json4s._
 import org.json4s.Extraction.decompose
 import org.json4s.native.Serialization

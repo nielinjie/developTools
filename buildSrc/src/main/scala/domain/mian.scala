@@ -1,7 +1,7 @@
 package domain
 
 import java.io.{FileWriter, File, FileReader}
-import domain.parse.Parser
+import domain.parse.{Rewrite, Preprocessor, SimplePrinter, Parser}
 
 import scala.io.Source
 import scala.util.parsing.combinator._

@@ -1,10 +1,13 @@
 package domain.parse
 
-import scala.util.parsing.combinator._
-import domain.dsl._
-import domain.dsl.FunctionFirstDSL._
+import domain.dsl.FunctionFirstDSL.{Domain, Entity, Function}
+import domain.dsl.Ref
 
+import scala.util.parsing.combinator.RegexParsers
 
+/**
+  * Created by nielinjie on 1/14/16.
+  */
 object Parser extends RegexParsers {
 
   def COMMA = ","
@@ -81,4 +84,3 @@ object Parser extends RegexParsers {
 
 
 }
-

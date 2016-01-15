@@ -1,13 +1,16 @@
-package domain
+package domain.parse
 
-import org.kiama.==>
+import domain.dsl.FunctionFirstDSL
+import domain.{Domain, Entity, Id, Ref,Function}
+import org.kiama._
 import org.kiama.rewriting.Rewriter._
-import org.kiama.output.PrettyPrinter
+
+
 import scala.collection.mutable.MutableList
-import org.slf4j.{Logger, LoggerFactory}
-import domain.dsl.{FunctionFirstDSL}
 
-
+/**
+  * Created by nielinjie on 1/14/16.
+  */
 object Rewrite {
   def rewrite(domain:FunctionFirstDSL.Domain):Domain = {
     val functions:MutableList[Function]=MutableList()
@@ -35,17 +38,5 @@ object Rewrite {
     val top=everywherebu(funcFind)
     top(domain).get
     Domain(functions.toList,entities.toList,refs.toList)
-  }
-}
-object Printer extends PrettyPrinter{
-  val log: Logger = LoggerFactory.getLogger(Printer.getClass)
-
-  def print(any:Any) ={
-    log.debug(super.pretty_any(any).toString)
-  }
-}
-object SimplePrinter extends PrettyPrinter{
-  def print(any:Any)={
-    println(super.pretty_any(any).toString)
   }
 }

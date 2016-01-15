@@ -1,5 +1,8 @@
-package domain
+package domain.parse
 
+/**
+  * Created by nielinjie on 1/14/16.
+  */
 object Preprocessor {
 
   val BlockStartToken = "{"
