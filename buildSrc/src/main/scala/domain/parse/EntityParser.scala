@@ -1,5 +1,7 @@
 package domain.parse
 
+import java.io.Serializable
+
 import domain.dsl.EntitiesDSL._
 
 import scala.util.parsing.combinator.RegexParsers
@@ -16,18 +18,27 @@ object EntityParser extends RegexParsers {
 
   def comment = "//(.*)".r
 
+  private val ENTITY = "entity"
+  private val keys: List[String] = List(ENTITY)
+
   def name: Parser[String] = "[\u4e00-\u9fa5\\w/]+".r
 
 
-
   def entity: Parser[Entity] = {
-    "entity" ~> name ~ blocked((method | property).*).? ^^ {
+    ENTITY ~> name ~ blocked((method | property).*).? ^^ {
       case (name ~ methodsOrProperties) =>
         val (methods, properties) = methodsOrProperties.map(_.partition {
           case mp =>
             mp.isInstanceOf[Method]
         }).getOrElse((List(), List()))
         Entity(name, methods.map(_.asInstanceOf[Method]), properties.map(_.asInstanceOf[Property]))
+    }
+  }
+
+  def inner: Parser[Inner] = {
+    name ~ blocked(property.*) ^^ {
+      case (name ~ properties) =>
+        Inner(name, properties)
     }
   }
 
@@ -58,10 +69,42 @@ object EntityParser extends RegexParsers {
   }
 
   def property: Parser[Property] = {
-    (name ~ (COLON ~> name).?) ^^ {
-      case name ~ ty =>
-        Property(name, ty.getOrElse(unknown))
+    def toE(op: Serializable): Either[String, Inner] = {
+      op match {
+        case a: String =>
+          Left(a)
+        case _ =>
+          op match {
+            case b: Inner => Right(b)
+            case _ => ???
+          }
+      }
     }
+    def ty: Parser[Either[String, Inner]] = {
+      (COLON ~> (inner | name)) ^^ {
+        case tyOrInner =>
+          toE(tyOrInner)
+      }
+    }
+    def full = {
+      (name ~ ty) ^^ {
+        case (name ~ ty) =>
+          Property(name, ty)
+      }
+    }
+    def nameOnly ={
+      name ^^ {
+        case (name)=>
+          Property(name,Left(unknown))
+      }
+    }
+    def tyOnly ={
+      ty ^^ {
+        case (ty)=>
+          Property(unknown,ty)
+      }
+    }
+    full | tyOnly | nameOnly
   }
 
 
