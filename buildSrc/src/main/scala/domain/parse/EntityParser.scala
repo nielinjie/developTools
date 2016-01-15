@@ -68,18 +68,20 @@ object EntityParser extends RegexParsers {
     }
   }
 
-  def property: Parser[Property] = {
-    def toE(op: Serializable): Either[String, Inner] = {
-      op match {
-        case a: String =>
-          Left(a)
-        case _ =>
-          op match {
-            case b: Inner => Right(b)
-            case _ => ???
-          }
-      }
+  def toE[T,U](op: Any): Either[T, U] = {
+    op match {
+      case a: T =>
+        Left(a)
+      case _ =>
+        op match {
+          case b: U => Right(b)
+          case _ => ???
+        }
     }
+  }
+  def property: Parser[Property] = {
+
+
     def ty: Parser[Either[String, Inner]] = {
       (COLON ~> (inner | name)) ^^ {
         case tyOrInner =>
@@ -92,18 +94,8 @@ object EntityParser extends RegexParsers {
           Property(name, ty)
       }
     }
-    def nameOnly ={
-      name ^^ {
-        case (name)=>
-          Property(name,Left(unknown))
-      }
-    }
-    def tyOnly ={
-      ty ^^ {
-        case (ty)=>
-          Property(unknown,ty)
-      }
-    }
+    def nameOnly = name.map(Property(_, Left(unknown)))
+    def tyOnly = ty.map(Property(unknown, _))
     full | tyOnly | nameOnly
   }
 
