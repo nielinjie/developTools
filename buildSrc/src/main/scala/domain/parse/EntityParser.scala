@@ -19,19 +19,19 @@ object EntityParser extends RegexParsers {
   def comment = "//(.*)".r
 
   private val ENTITY = "entity"
-  private val keys: List[String] = List(ENTITY)
 
   def name: Parser[String] = "[\u4e00-\u9fa5\\w/]+".r
+  def qName:Parser[QName]=rep1sep(name,".").map(QName)
 
 
   def entity: Parser[Entity] = {
-    ENTITY ~> name ~ blocked((method | property).*).? ^^ {
-      case (name ~ methodsOrProperties) =>
+    ENTITY ~> qName ~ blocked((method | property).*).? ^^ {
+      case (qName ~ methodsOrProperties) =>
         val (methods, properties) = methodsOrProperties.map(_.partition {
           case mp =>
             mp.isInstanceOf[Method]
         }).getOrElse((List(), List()))
-        Entity(name, methods.map(_.asInstanceOf[Method]), properties.map(_.asInstanceOf[Property]))
+        Entity(qName, methods.map(_.asInstanceOf[Method]), properties.map(_.asInstanceOf[Property]))
     }
   }
 
@@ -51,9 +51,9 @@ object EntityParser extends RegexParsers {
 
 
   def method: Parser[Method] = {
-    (name ~ aroundBy(argList, PAREN) ~ (COLON ~> name).?) ^^ {
+    (name ~ aroundBy(argList, PAREN) ~ (COLON ~> qName).?) ^^ {
       case (name ~ args ~ ty) =>
-        Method(name, ty.getOrElse(unknown), args)
+        Method(name, ty.getOrElse(unknownQ), args)
     }
   }
 
@@ -62,9 +62,9 @@ object EntityParser extends RegexParsers {
   }
 
   def arg: Parser[Arg] = {
-    (name ~ (COLON ~> name).?) ^^ {
+    (name ~ (COLON ~> qName).?) ^^ {
       case name ~ ty =>
-        Arg(name, ty.getOrElse(unknown))
+        Arg(name, ty.getOrElse(unknownQ))
     }
   }
 
@@ -82,8 +82,8 @@ object EntityParser extends RegexParsers {
   def property: Parser[Property] = {
 
 
-    def ty: Parser[Either[String, Inner]] = {
-      (COLON ~> (inner | name)) ^^ {
+    def ty: Parser[Either[QName, Inner]] = {
+      (COLON ~> (inner | qName)) ^^ {
         case tyOrInner =>
           toE(tyOrInner)
       }
@@ -94,7 +94,7 @@ object EntityParser extends RegexParsers {
           Property(name, ty)
       }
     }
-    def nameOnly = name.map(Property(_, Left(unknown)))
+    def nameOnly = name.map(Property(_, Left(unknownQ)))
     def tyOnly = ty.map(Property(unknown, _))
     full | tyOnly | nameOnly
   }

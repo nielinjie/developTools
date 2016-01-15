@@ -5,11 +5,13 @@ package domain.dsl
   */
 object EntitiesDSL{
   val unknown = "Unknown"
+  val unknownQ = QName(List("Unknown"))
+  case class QName(names:List[String])
   case class Domain(entities: List[Entity])
-  case class Entity(name: String, methods:List[Method] = Nil, properties:List[Property]=Nil, alias: List[String] = Nil) extends Referable
+  case class Entity(name: QName, methods:List[Method] = Nil, properties:List[Property]=Nil)
   case class Inner(name:String,properties:List[Property])
-  case class Property(name:String,typ:Either[String,Inner]=Left(unknown))
-  case class Method(name:String,typ:String=unknown,args:List[Arg]=Nil)
-  case class Arg(name:String, typ:String=unknown)
+  case class Property(name:String,typ:Either[QName,Inner])
+  case class Method(name:String,typ:QName,args:List[Arg]=Nil)
+  case class Arg(name:String, typ:QName)
 
 }
