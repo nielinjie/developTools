@@ -1,7 +1,10 @@
-package domain
+package domain.plan
 
 import java.io.File
+
 import com.paic.server.JsonRestPlan
+import domain.repository.DomainRepository
+
 import scala.collection.JavaConverters._
 
 class Plan(sourceFiles:List[File]) extends JsonRestPlan("domain","domains",new DomainRepository(sourceFiles)){

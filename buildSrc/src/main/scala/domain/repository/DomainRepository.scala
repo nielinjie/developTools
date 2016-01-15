@@ -1,27 +1,15 @@
-package domain
+package domain.repository
 
-import domain.parse.{Printer, Rewrite, Preprocessor, Parser}
-import org.json4s._
-import org.json4s.Extraction.decompose
-import org.json4s.native.Serialization
-import org.json4s.native.Serialization.{read, write}
-import com.paic.server.Repository
 import java.io.File
+
+import com.paic.server.Repository
+import domain.Domain
+import domain.parse.{Parser, Preprocessor, Printer, Rewrite}
+import org.json4s._
+
 import scala.io.{Codec, Source}
 
-import scala.collection.JavaConverters._
 
-object Json {
-  def json(domain: Domain): String = {
-    implicit val formats = Serialization.formats(NoTypeHints)
-    write(domain)
-  }
-
-  def toJValue(domain: Domain): JObject = {
-    implicit val formats = Serialization.formats(NoTypeHints)
-    decompose(domain).asInstanceOf[JObject]
-  }
-}
 
 
 class DomainRepository(val sourceFiles: List[File]) extends Repository {
