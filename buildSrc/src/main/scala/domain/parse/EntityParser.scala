@@ -9,7 +9,7 @@ import scala.util.parsing.combinator.RegexParsers
 /**
   * Created by nielinjie on 1/14/16.
   */
-object EntityParser extends RegexParsers {
+object EntityParser  extends RegexParsers {
 
   private val COMMA: String = ","
   private val COLON: String = ":"
@@ -21,10 +21,12 @@ object EntityParser extends RegexParsers {
   private val ENTITY = "entity"
 
   def name: Parser[String] = "[\u4e00-\u9fa5\\w/]+".r
-  def qName:Parser[QName]=rep1sep(name,".").map(QName)
+  def qName:Parser[QName]=rep1sep(name,".").map(QName.apply)
 
 
-  def entity: Parser[Entity] = {
+
+
+  def entity:Parser[Entity]=positioned({
     ENTITY ~> qName ~ blocked((method | property).*).? ^^ {
       case (qName ~ methodsOrProperties) =>
         val (methods, properties) = methodsOrProperties.map(_.partition {
@@ -33,14 +35,14 @@ object EntityParser extends RegexParsers {
         }).getOrElse((List(), List()))
         Entity(qName, methods.map(_.asInstanceOf[Method]), properties.map(_.asInstanceOf[Property]))
     }
-  }
+  })
 
-  def inner: Parser[Inner] = {
-    name ~ blocked(property.*) ^^ {
+  def inner: Parser[Inner] =positioned( {
+    name.? ~ blocked(property.*) ^^ {
       case (name ~ properties) =>
-        Inner(name, properties)
+        Inner(name.getOrElse(unknown), properties)
     }
-  }
+  })
 
   def domain: Parser[Domain] = {
     blocked(entity.*) ^^ {
@@ -50,12 +52,12 @@ object EntityParser extends RegexParsers {
   }
 
 
-  def method: Parser[Method] = {
+  def method: Parser[Method] = positioned({
     (name ~ aroundBy(argList, PAREN) ~ (COLON ~> qName).?) ^^ {
       case (name ~ args ~ ty) =>
         Method(name, ty.getOrElse(unknownQ), args)
     }
-  }
+  })
 
   def argList: Parser[List[Arg]] = {
     repsep(arg, COMMA)
@@ -79,7 +81,7 @@ object EntityParser extends RegexParsers {
         }
     }
   }
-  def property: Parser[Property] = {
+  def property: Parser[Property] = positioned({
 
 
     def ty: Parser[Either[QName, Inner]] = {
@@ -97,7 +99,7 @@ object EntityParser extends RegexParsers {
     def nameOnly = name.map(Property(_, Left(unknownQ)))
     def tyOnly = ty.map(Property(unknown, _))
     full | tyOnly | nameOnly
-  }
+  })
 
 
   def blocked[T](parser: Parser[T]): Parser[T] = {

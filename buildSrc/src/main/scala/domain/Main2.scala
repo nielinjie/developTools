@@ -11,7 +11,7 @@ object Main2 {
     val printer=SimplePrinter
     val pre=Source.fromFile(new File("./lines.entities")).mkString
 //    val pre=Preprocessor.preProcess(Source.fromFile(new File("./lines.entities")).mkString)
-    println(pre)
+//    println(pre)
     val parsed=LineParser.parseAll(LineParser.all,pre)
     println(parsed.map{
       d=>
