@@ -1,5 +1,6 @@
 package com.paic.server
 
+import server.JsonRestHelper
 import unfiltered.request._
 import unfiltered.response._
 import org.json4s._
@@ -10,42 +11,17 @@ import scala.util.control.Exception._
 import org.json4s.native.JsonMethods._
 
 import scalaz.{Validation, Failure, Success}
-import org.json4s.ext.JodaTimeSerializers
 import org.slf4j.{Logger, LoggerFactory}
-import unfiltered.filter.request.ContextPath
 import unfiltered.netty.cycle.ThreadPool
 import unfiltered.netty.ServerErrorResponse
 
 
-class JsonRestPlan(val objName:String,val collectionName:String,val repository:Repository) extends unfiltered.netty.cycle.Plan with ThreadPool with ServerErrorResponse{
+class JsonRestPlan(val objName:String,val collectionName:String,val repository:Repository) extends unfiltered.netty.cycle.Plan with ThreadPool with ServerErrorResponse with JsonRestHelper{
   val log: Logger = LoggerFactory.getLogger(classOf[JsonRestPlan])
 
   def validate(obj: JValue): Validation[String, JValue] =Success(obj)
 
-  object JsonBody {
-    implicit val formats = DefaultFormats++JodaTimeSerializers.all
 
-    def unapply[T](req: HttpRequest[T]): Option[JValue] =
-      unfiltered.request.JsonBody(req)
-  }
-
-  def checkAcceptJson(req: HttpRequest[_])(body: => ResponseFunction[Any]): ResponseFunction[Any] = {
-    req match {
-      case Accepts.Json(_) => body
-      case _ => BadRequest ~> ResponseString("You must accept application/json")
-    }
-  }
-
-  def checkContentJson(req: HttpRequest[_])(body: => ResponseFunction[Any]): ResponseFunction[Any] = {
-    req match {
-      case RequestContentType("application/json") => body
-      case _ => BadRequest ~> ResponseString("You must supply application/json")
-    }
-  }
-
-  def idQuery(id: String) = {
-    JObject(List(JField("id", JObject(List(JField("$eq", JString(id)))))))
-  }
 
   def query(q: Option[JObject]) = Ok ~> Json(JArray(repository.query(q)))
 

@@ -33,7 +33,7 @@ trait OneObjectRepository[T]  extends Repository {
 }
 
 class MapRepository extends Repository{
-  private var repository: scala.collection.mutable.Map[UUID, JObject] = scala.collection.mutable.Map.empty
+  private val repository: scala.collection.mutable.Map[UUID, JObject] = scala.collection.mutable.Map.empty
   def add(obj:JObject)={
     def uuid = java.util.UUID.randomUUID
     repository.put(uuid,obj ~ ("id"->uuid.toString))

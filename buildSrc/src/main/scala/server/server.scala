@@ -13,7 +13,7 @@ class Server(val handlers: List[ChannelHandler], val resource: File, val port: I
       (http,handle)=>
         http.handler(handle)
     })
-      //.handler(Messenger.plan)
+//      .handler(Messenger.plan)
       .resources(resource.getAbsoluteFile.getCanonicalFile.toURI.toURL)
       .run
   }

@@ -1,22 +1,20 @@
 package domain.dsl
 
 import java.io.File
-import java.nio.file.{Path, Files, FileSystems}
-import domain.dsl.EntitiesDSL.{QName, Entity, Domain}
-import domain.dsl.Message.NameDuplicated
-import domain.parse.{EntityRewritor, Preprocessor, EntityParser}
+import java.nio.file.{FileSystems, Files, Path}
 
-import scala.collection.mutable
-import scala.io.Source
+import domain.parse.{EntityParser, Preprocessor}
 
 import scala.collection.JavaConversions._
+import scala.io.{Codec, Source}
 
 /**
   * Created by nielinjie on 1/18/16.
   */
 class Builder(val root: File) {
   def eachFile(context: Context, path: File): Unit = {
-    val pre = Preprocessor.preProcess(Source.fromFile(path).mkString)
+    println(path)
+    val pre = Preprocessor.preProcess(Source.fromFile(path)(Codec.UTF8).mkString)
     val parser = EntityParser
     val parsed = parser.parseAll(parser.domain, pre)
     println(parsed.map {
@@ -28,11 +26,14 @@ class Builder(val root: File) {
     })
   }
 
+  def include(f:Path):Boolean ={
+    f.getFileName.toString.endsWith(".entities")
+  }
   def walkTree(context: Context, fn: (Context, File) => Unit) = {
     val path = FileSystems.getDefault.getPath(root.getAbsolutePath)
     Files.walk(path).iterator.foreach {
       f: Path =>
-        if (!f.toFile.isDirectory) {
+        if (!f.toFile.isDirectory && include(f)) {
           fn(context, f.toFile)
         }
     }

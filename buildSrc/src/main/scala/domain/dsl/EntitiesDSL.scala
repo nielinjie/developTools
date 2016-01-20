@@ -22,11 +22,11 @@ object EntitiesDSL {
   case class Domain(entities: List[Entity]) extends DocumentAware
   case class Entity(name: QName, methods: List[Method] = Nil, properties: List[Property] = Nil) extends Positional with DocumentAware
 
-  case class Inner(name: String, properties: List[Property]) extends Positional with DocumentAware
+  case class Inner(name: String, properties: List[Property]) extends Positional
 
-  case class Property(name: String, typ: Either[QName, Inner]) extends Positional with DocumentAware
+  case class Property(name: String, typ: Either[QName, Inner]) extends Positional
 
-  case class Method(name: String, typ: QName, args: List[Arg] = Nil) extends Positional with DocumentAware
+  case class Method(name: String, typ: QName, args: List[Arg] = Nil) extends Positional
 
   case class Arg(name: String, typ: QName)
 

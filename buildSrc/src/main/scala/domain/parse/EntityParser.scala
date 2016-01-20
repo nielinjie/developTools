@@ -9,7 +9,7 @@ import scala.util.parsing.combinator.RegexParsers
 /**
   * Created by nielinjie on 1/14/16.
   */
-object EntityParser  extends RegexParsers {
+object EntityParser extends RegexParsers {
 
   private val COMMA: String = ","
   private val COLON: String = ":"
@@ -21,12 +21,11 @@ object EntityParser  extends RegexParsers {
   private val ENTITY = "entity"
 
   def name: Parser[String] = "[\u4e00-\u9fa5\\w/]+".r
-  def qName:Parser[QName]=rep1sep(name,".").map(QName.apply)
+
+  def qName: Parser[QName] = rep1sep(name, ".").map(QName.apply)
 
 
-
-
-  def entity:Parser[Entity]=positioned({
+  def entity: Parser[Entity] = positioned({
     ENTITY ~> qName ~ blocked((method | property).*).? ^^ {
       case (qName ~ methodsOrProperties) =>
         val (methods, properties) = methodsOrProperties.map(_.partition {
@@ -37,7 +36,7 @@ object EntityParser  extends RegexParsers {
     }
   })
 
-  def inner: Parser[Inner] =positioned( {
+  def inner: Parser[Inner] = positioned({
     name.? ~ blocked(property.*) ^^ {
       case (name ~ properties) =>
         Inner(name.getOrElse(unknown), properties)
@@ -70,21 +69,17 @@ object EntityParser  extends RegexParsers {
     }
   }
 
-  def toE[T,U](op: Any): Either[T, U] = {
-    op match {
-      case a: T =>
-        Left(a)
-      case _ =>
-        op match {
-          case b: U => Right(b)
-          case _ => ???
-        }
-    }
+  def toE(op: Any): Either[ QName,Inner] = {
+   op match {
+     case b: Inner => Right(b)
+     case _ => Left(op.asInstanceOf[QName])
+   }
   }
+
   def property: Parser[Property] = positioned({
 
 
-    def ty: Parser[Either[QName, Inner]] = {
+    def ty: Parser[Either[ QName,Inner]] = {
       (COLON ~> (inner | qName)) ^^ {
         case tyOrInner =>
           toE(tyOrInner)
