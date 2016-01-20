@@ -78,4 +78,17 @@ object EntityRewritor {
       .get.asInstanceOf[Domain]
     doc
   }
+
+  def rewriteInnerName(domain:Domain): Domain = {
+    var index:Int =0
+    def noName = rule[Inner]{
+      case i:Inner if i.name.equals(unknown) => {
+        val inner = i.copy(name = s"_$index")
+        index = index+1
+        inner
+      }
+    }
+    everywherebu(noName)(domain)
+      .get.asInstanceOf[Domain]
+  }
 }

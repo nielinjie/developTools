@@ -23,10 +23,22 @@ object Message {
     def level: Level.Level
   }
 
-  case class NameDuplicated(e: Entity, other: Entity) extends Message {
+  case class EntityNameDuplicated(e: Entity, other: Entity) extends Message {
     var level = Level.Error
     def display(context: Context) = {
       s"name '${e.name.readable}' is duplicated with entity where - ${other.pos}"
+    }
+  }
+  case class MethodNameDuplicated(e:Entity,m:Method) extends Message{
+    val level = Level.Error
+    def display(context:Context)={
+      s"method name - ${m.name} is duplicated, at ${context.positionIndex.getOrElse(m,???)}"
+    }
+  }
+  case class PropertyNameDuplicated(e:Entity, p:Property) extends Message{
+    val level = Level.Error
+    def display(context:Context)={
+      s"property name - ${p.name} is duplicated, at ${context.positionIndex.getOrElse(p,???)}"
     }
   }
 

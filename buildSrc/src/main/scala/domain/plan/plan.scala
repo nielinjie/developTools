@@ -3,6 +3,7 @@ package domain.plan
 import java.io.File
 
 import domain.repository.DomainRepository
+import io.netty.channel.ChannelHandler.Sharable
 import org.json4s.Extraction._
 import server.JsonRestHelper
 import unfiltered.netty.ServerErrorResponse
@@ -12,14 +13,15 @@ import unfiltered.response._
 
 import scala.util.control.Exception._
 
+@Sharable
 class Plan(root:File)  extends unfiltered.netty.cycle.Plan with ThreadPool with ServerErrorResponse with JsonRestHelper{
 
-  val repository = new DomainRepository(root)
 
   def intent = {
     case req@GET(Path(Seg("domains"  :: Nil))) => {
       checkAcceptJson(req) {
         allCatch.either {
+          val repository = new DomainRepository(root)
           decompose(repository.context.domains)
         } match {
           case Right(q) => Ok ~> JsonResponse(q)

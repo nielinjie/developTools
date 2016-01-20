@@ -1,7 +1,9 @@
 package domain.dsl
 
 
-import domain.dsl.Message.NameDuplicated
+import java.util.UUID
+
+import domain.dsl.Message.{PropertyNameDuplicated, MethodNameDuplicated, EntityNameDuplicated}
 import domain.parse.EntityRewritor
 
 import scala.collection.mutable
@@ -32,6 +34,7 @@ class Context {
     this.domains = this.domains.map(EntityRewritor.rewriteEntityQName(_, this))
     this.domains = this.domains.map(checkDuplicatedEntityName)
     this.domains = this.domains.map(EntityRewritor.guessTypeFullName(_,this))
+    this.domains = this.domains.map(EntityRewritor.rewriteInnerName)
   }
 
   def checkDuplicatedEntityName(d: Domain): Domain = {
@@ -40,13 +43,37 @@ class Context {
         nameIndex.get(e.name) match {
           case Some(n) => {
             //Duplicated
-            message(e, NameDuplicated(e,n) )
+            message(e, EntityNameDuplicated(e,n) )
           }
           case None => {
             nameIndex.put(e.name, e)
             entityIndex.put(e, e.name)
           }
         }
+    })
+    d
+  }
+  def checkDuplicatedMethodName(d:Domain):Domain ={
+    d.entities.foreach({
+      e:Entity =>
+        val methodNames:mutable.Set[String] = new mutable.HashSet[String]()
+        e.methods.foreach({
+          m :Method =>
+            if(methodNames.contains(m.name))
+              message(m,MethodNameDuplicated(e,m))
+              else {
+              methodNames.+(m.name)
+          ()}
+        })
+        val propertyNames:mutable.Set[String] = new mutable.HashSet[String]()
+        e.properties.foreach({
+          m :Property =>
+            if(propertyNames.contains(m.name))
+              message(m,PropertyNameDuplicated(e,m))
+            else {
+              propertyNames.+(m.name)
+              ()}
+        })
     })
     d
   }
