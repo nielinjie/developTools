@@ -35,6 +35,7 @@ class Context {
     this.domains = this.domains.map(checkDuplicatedEntityName)
     this.domains = this.domains.map(EntityRewritor.guessTypeFullName(_,this))
     this.domains = this.domains.map(EntityRewritor.rewriteInnerName)
+    this.domains = this.domains.map(EntityRewritor.rewriteUnknownName)
   }
 
   def checkDuplicatedEntityName(d: Domain): Domain = {

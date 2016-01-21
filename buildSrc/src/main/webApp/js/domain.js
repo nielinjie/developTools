@@ -1,6 +1,16 @@
 function entities(){
     return _(window.domains).chain().pluck('entities').flatten().value()
 }
+
+function packages(){
+    return _(entities()).chain().map(function(e){
+        return {
+            name:entityPackage(e),
+            parent:entityPackageParent(e)
+            }
+        }).unique(function(p){return p.name}).value()
+}
+
 function key(entity) {
     return entity.name.names.join(".")
 
@@ -12,7 +22,12 @@ function entityFullName(entity){
 function entityShortNameString(entity){
     return _(entity.name.names).last()
 }
-
+function entityPackageParent(entity){
+    return _.chain(entity.name.names).initial().initial().join(".").value()
+}
+function entityPackage(entity){
+    return _.chain(entity.name.names).initial().join(".").value()
+}
 function entityPackageName(entity){
     return _.chain(entity.name.names).tail().initial().join(".").value()
 }
@@ -22,22 +37,30 @@ function memberKey(member,entity,inner){
 
 function methodData(method,entity,inner){
     return {
-        key:memberKey(method,entity,inner),
+        key:"member - "+memberKey(method,entity,inner),
         name:method.name
     }
 }
 
 function propertyData(property,entity,inner){
     return {
-        key:memberKey(property,entity,inner),
+        key:"member - "+memberKey(property,entity,inner),
         name:property.name
+    }
+}
+
+function packageData(p){
+    return {
+        key: "package - "+p.name,
+        parent: "package - "+p.parent
     }
 }
 
 function entityData(entity){
     return {
-        key: key(entity),
+        key: "entity - "+key(entity),
         name: entityShortNameString(entity),
+        parent:"package - "+entityPackage(entity),
         fullName:entityFullName(entity),
         packageName:entityPackageName(entity),
         methods:_(entity.methods).map(function(m){
@@ -58,7 +81,7 @@ function inners(entity){
 }
 function innerData(inner,entity){
     return {
-            key: memberKey(inner,entity),
+            key: "member - "+memberKey(inner,entity),
             name: inner.name,
             methods:_(inner.methods).map(function(m){
                 return methodData(m,entity,inner)
@@ -71,8 +94,20 @@ function innerData(inner,entity){
 }
 function innerLink(inner,entity){
     return {
-             to: key(entity), from: memberKey(inner,entity), relationship: "aggregation"
+             from: "entity - "+ key(entity), to: "member - "+memberKey(inner,entity), relationship: "aggregation"
 
 
         }
+}
+
+function typName(typ){
+    return typ.names.join(".")
+}
+
+function refLink(entity,member){
+    return {
+        from: "entity - "+key(entity),
+        to:"entity - "+ typName(member.typ),
+        relationship:"ref"
+    }
 }

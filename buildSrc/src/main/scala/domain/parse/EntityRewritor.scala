@@ -91,4 +91,17 @@ object EntityRewritor {
     everywherebu(noName)(domain)
       .get.asInstanceOf[Domain]
   }
+
+  def rewriteUnknownName(domain:Domain):Domain={
+    def u = rule[Property]{
+      case p:Property if p.name.equals(unknown) =>{
+        p.copy(name =p.typ.fold(
+          {qn:QName=>qn.names.last},{in:Inner=>in.name}
+        ))
+      }
+
+    }
+    everywherebu(u)(domain)
+      .get.asInstanceOf[Domain]
+  }
 }

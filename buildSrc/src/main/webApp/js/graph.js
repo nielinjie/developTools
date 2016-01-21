@@ -1,23 +1,24 @@
 function fullGraph(){
-    init()
+    initUml()
 }
-function init() {
+function initUml() {
     var $ = go.GraphObject.make;
 
-    myDiagram =
-      $(go.Diagram, "myDiagram",
+    umlDiagram =
+      $(go.Diagram, "umlDiagram",
         {
           initialContentAlignment: go.Spot.Center,
           "undoManager.isEnabled": true,
-          layout: $(go.TreeLayout,
-                    { // this only lays out in trees nodes connected by "generalization" links
-                      angle: 90,
-                      path: go.TreeLayout.PathSource,  // links go from child to parent
-                      setsPortSpot: false,  // keep Spot.AllSides for link connection spot
-                      setsChildPortSpot: false,  // keep Spot.AllSides
-                      // nodes not connected by "generalization" links are laid out horizontally
-                      arrangement: go.TreeLayout.ArrangementHorizontal
-                    })
+//          layout: $(go.TreeLayout,
+//                    { // this only lays out in trees nodes connected by "generalization" links
+//                      angle: 90,
+//                      path: go.TreeLayout.PathSource,  // links go from child to parent
+//                      setsPortSpot: false,  // keep Spot.AllSides for link connection spot
+//                      setsChildPortSpot: false,  // keep Spot.AllSides
+//                      // nodes not connected by "generalization" links are laid out horizontally
+//                      arrangement: go.TreeLayout.ArrangementHorizontal
+//                    })
+layout:$(go.LayeredDigraphLayout)
         });
 
     // show visibility or access as a single character at the beginning of each property or method
@@ -89,7 +90,7 @@ function init() {
 
     // this simple template does not have any buttons to permit adding or
     // removing properties or methods, but it could!
-    myDiagram.nodeTemplate =
+    umlDiagram.nodeTemplate =
       $(go.Node, "Auto",
         {
           locationSpot: go.Spot.Center,
@@ -147,13 +148,13 @@ function init() {
 
     function convertToArrow(r) {
       switch (r) {
-        case "generalization": return "Triangle";
+        case "ref": return "Triangle";
         case "aggregation": return "StretchedDiamond";
         default: return "";
       }
     }
 
-    myDiagram.linkTemplate =
+    umlDiagram.linkTemplate =
       $(go.Link,
         { routing: go.Link.Orthogonal },
         new go.Binding("isLayoutPositioned", "relationship", convertIsTreeLink),
@@ -184,75 +185,19 @@ function init() {
 
                 }).flatten().value()
 
+        var refLinkData =_(entities()).chain().map(function (e){
+            return e.properties.map(function(p){
+                return (_.isUndefined(p.typ.names))?[]:refLink(e,p)
+            })
+        }).flatten().value()
+
         var nodedata =_(entityNodedata).union(innerNodeData)
         
-        var linkdata = innerLinkData
-//    // setup a few example class nodes and relationships
-//    var nodedata = [
-//      {
-//        key: 1,
-//        name: "BankAccount",
-//        properties: [
-//          { name: "owner", type: "String", visibility: "public" },
-//          { name: "balance", type: "Currency", visibility: "public", default: "0" }
-//        ],
-//        methods: [
-//          { name: "deposit", parameters: [{ name: "amount", type: "Currency" }], visibility: "public" },
-//          { name: "withdraw", parameters: [{ name: "amount", type: "Currency" }], visibility: "public" }
-//        ]
-//      },
-//      {
-//        key: 11,
-//        name: "Person",
-//        properties: [
-//          { name: "name", type: "String", visibility: "public" },
-//          { name: "birth", type: "Date", visibility: "protected" }
-//        ],
-//        methods: [
-//          { name: "getCurrentAge", type: "int", visibility: "public" }
-//        ]
-//      },
-//      {
-//        key: 12,
-//        name: "Student",
-//        properties: [
-//          { name: "classes", type: "List", visibility: "public" }
-//        ],
-//        methods: [
-//          { name: "attend", parameters: [{ name: "class", type: "Course" }], visibility: "private" },
-//          { name: "sleep", visibility: "private" }
-//        ]
-//      },
-//      {
-//        key: 13,
-//        name: "Professor",
-//        properties: [
-//          { name: "classes", type: "List", visibility: "public" }
-//        ],
-//        methods: [
-//          { name: "teach", parameters: [{ name: "class", type: "Course" }], visibility: "private" }
-//        ]
-//      },
-//      {
-//        key: 14,
-//        name: "Course",
-//        properties: [
-//          { name: "name", type: "String" },
-//          { name: "description", type: "String" },
-//          { name: "professor", type: "Professor" },
-//          { name: "location", type: "String" },
-//          { name: "times", type: "List" },
-//          { name: "prerequisites", type: "List" },
-//          { name: "students", type: "List" }
-//        ]
-//      }
-//    ];
-//    var linkdata = [
-//      { from: 12, to: 11, relationship: "generalization" },
-//      { from: 13, to: 11, relationship: "generalization" },
-//      { from: 14, to: 13, relationship: "aggregation" }
-//    ];
-    myDiagram.model = $(go.GraphLinksModel,
+        var linkdata = _(innerLinkData).union(refLinkData)
+
+
+
+    umlDiagram.model = $(go.GraphLinksModel,
       {
         copiesArrays: true,
         copiesArrayObjects: true,
