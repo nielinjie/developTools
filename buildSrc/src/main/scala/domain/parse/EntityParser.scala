@@ -10,8 +10,10 @@ import scala.util.parsing.combinator.RegexParsers
   * Created by nielinjie on 1/14/16.
   */
 object EntityParser extends RegexParsers {
+  protected override val whiteSpace = """(\s|//\S*|(?m)/\*(\*(?!/)|[^*])*\*/)+""".r
 
-  private val COMMA: String = ","
+
+private val COMMA: String = ","
   private val COLON: String = ":"
   private val BRACE: String = "{}"
   private val PAREN: String = "()"
@@ -26,13 +28,13 @@ object EntityParser extends RegexParsers {
 
 
   def entity: Parser[Entity] = positioned({
-    ENTITY ~> qName ~ blocked((method | property).*).? ^^ {
-      case (qName ~ methodsOrProperties) =>
+    ENTITY ~> qName ~(COLON ~> qName).? ~ blocked((method | property).*).? ^^ {
+      case (qName ~ parent ~ methodsOrProperties) =>
         val (methods, properties) = methodsOrProperties.map(_.partition {
           case mp =>
             mp.isInstanceOf[Method]
         }).getOrElse((List(), List()))
-        Entity(qName, methods.map(_.asInstanceOf[Method]), properties.map(_.asInstanceOf[Property]))
+        Entity(qName,parent, methods.map(_.asInstanceOf[Method]), properties.map(_.asInstanceOf[Property]))
     }
   })
 

@@ -13,7 +13,18 @@ object Preprocessor {
   def preProcess(text: String): String = {
     val lines = text.split('\n').toList.filterNot(_.forall(isWhiteChar))
     val processedLines = BlockStartToken :: insertTokens(lines, List(0))
-    processedLines.mkString("\n")
+    join(processedLines)
+  }
+
+  def join(lines: List[String]): String = {
+    var current: List[String] = Nil
+    lines.foreach({
+      case l@BlockStartToken => current = current :+ " " :+ l
+      case l@BlockEndToken => current = current :+ " " :+ l
+      case l => current = current :+"\n":+ l
+    })
+    //TODO 需要处理第一行? 第一行一个孤零零的BlockStartToken. parse的时候会影响position
+    current.mkString
   }
 
   def insertTokens(lines: List[String], stack: List[Int]): List[String] = lines match {

@@ -19,11 +19,16 @@ class Context {
 
   def index[T, U]: mutable.Map[T, U] = mutable.Map.empty[T, U]
 
+
+  //FIXME some index should be domain/document scope.
   var domains: List[Domain] = List[Domain]()
-  val positionIndex: Index[Product, Position] = index[Product, Position]
-  val entityIndex: Index[Entity, QName] = index[Entity, QName]
-  val nameIndex: Index[QName, Entity] = index[QName, Entity]
-  val messagesIndex = index[Product, List[Message.Message]]
+
+  val positionIndex: Index[Product, Position] = index[Product, Position] //domain scope
+  val messagesIndex = index[Product, List[Message.Message]] //domain scope
+  val comments = index[Product,Comment] //domain scope
+
+  val entityIndex: Index[Entity, QName] = index[Entity, QName] //global
+  val nameIndex: Index[QName, Entity] = index[QName, Entity] //global
 
   def message(p: Product, s: Message.Message) = {
     messagesIndex.update(p, messagesIndex.getOrElse(p, Nil).:+(s))

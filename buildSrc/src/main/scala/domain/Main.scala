@@ -11,7 +11,7 @@ object Main {
   val printer = SimplePrinter
 
   def main(arg: Array[String]) = {
-    val path = new File("../entities")
+    val path = new File(arg.toList.headOption.getOrElse( "../entities"))
     val context = new Builder(path).build()
     context.domains.foreach(printer.print(_))
     println(Message.dump(context,Level.Info))

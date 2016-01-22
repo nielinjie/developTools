@@ -1,6 +1,10 @@
+entity 营销方案
+  :执行计划
+    执行时间
+entity 营销方案与门店
 
 
-entity 营销方案与优惠券模板
+entity 活动营销方案动态条件
 
 entity 动态人群条件
 entity 人群条件

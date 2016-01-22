@@ -14,16 +14,21 @@ import scala.io.{Codec, Source}
 class Builder(val root: File) {
   def eachFile(context: Context, path: File): Unit = {
     println(path)
-    val pre = Preprocessor.preProcess(Source.fromFile(path)(Codec.UTF8).mkString)
+    val input  =Source.fromFile(path)(Codec.UTF8).mkString
+    println(input)
+    val pre = Preprocessor.preProcess(input)
+    println(pre)
     val parser = EntityParser
     val parsed = parser.parseAll(parser.domain, pre)
     println(parsed.map {
       d =>
         d.document = Document(path, root)
-        context.domains = context.domains :+ (d)
-
-
+        context.domains = context.domains :+ d
+        val comments = CommentFinder.findCommentIn(pre)
+        context.comments.++=(CommentFinder.patchToDomain(comments,d))
+        d
     })
+
   }
 
   def include(f:Path):Boolean ={

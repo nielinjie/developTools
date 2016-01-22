@@ -20,7 +20,9 @@ entity 等级设置
 
 entity 实体卡储值账户
 entity 实体卡储值账户历史
+
 entity 储值规则明细
+
 entity 实体卡积分账户
   :会员实体卡
   会员:客户

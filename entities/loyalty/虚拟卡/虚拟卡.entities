@@ -8,11 +8,14 @@ entity 会员等级权益设置
   :会员价格策略
 entity 会员等级权益与菜品
   :会员等级权益设置
+  :品牌菜品
 
-entity 会员成长值历史
 entity 会员成长值
+entity 会员成长值历史
+
 entity 会员储值
 entity 会员储值历史
+
 entity 储值规则
   :详情
     满金额

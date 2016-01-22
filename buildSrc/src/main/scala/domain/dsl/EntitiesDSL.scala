@@ -20,7 +20,7 @@ object EntitiesDSL {
 
 
   case class Domain(entities: List[Entity]) extends DocumentAware
-  case class Entity(name: QName, methods: List[Method] = Nil, properties: List[Property] = Nil) extends Positional with DocumentAware
+  case class Entity(name: QName, parent:Option[QName],methods: List[Method] = Nil, properties: List[Property] = Nil) extends Positional with DocumentAware
 
   case class Inner(name: String, properties: List[Property]) extends Positional
 
@@ -48,6 +48,8 @@ object EntitiesDSL {
       names.mkString(".")
     }
   }
+
+  case class Comment(cotent:String) extends Positional
 
 }
 
