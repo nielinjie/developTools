@@ -9,7 +9,7 @@ import EntitiesDSL._
 object Message {
 
   def dump(context:Context,level:Level.Level):String={
-    context.messagesIndex.values.flatten.filter(_.level >= level).map(_.display(context)).mkString("\n")
+    context.messages.values.flatten.filter(_.level >= level).map(_.display(context)).mkString("\n")
   }
 
 
@@ -32,27 +32,27 @@ object Message {
   case class MethodNameDuplicated(e:Entity,m:Method) extends Message{
     val level = Level.Error
     def display(context:Context)={
-      s"method name - ${m.name} is duplicated, at ${context.positionIndex.getOrElse(m,???)}"
+      s"method name - ${m.name} is duplicated, at ${context.productToPosition.getOrElse(m,???)}"
     }
   }
   case class PropertyNameDuplicated(e:Entity, p:Property) extends Message{
     val level = Level.Error
     def display(context:Context)={
-      s"property name - ${p.name} is duplicated, at ${context.positionIndex.getOrElse(p,???)}"
+      s"property name - ${p.name} is duplicated, at ${context.productToPosition.getOrElse(p,???)}"
     }
   }
 
   case class GuessingFullName(p: Product, q: QName, entity: Entity) extends Message {
     var level = Level.Debug
     def display(context: Context) = {
-      s"name ${q.readable} at ${context.positionIndex.getOrElse(p, ???).readable} is guessing as ${entity.name.readable} "
+      s"name ${q.readable} at ${context.productToPosition.getOrElse(p, ???).readable} is guessing as ${entity.name.readable} "
     }
   }
 
   case class GuessedFullName(p: Product, q: QName, entity: Entity) extends Message {
     var level = Level.Info
     def display(context: Context) = {
-      s"name ${q.readable} at ${context.positionIndex.getOrElse(p, ???).readable} is guessed as ${entity.name.readable} "
+      s"name ${q.readable} at ${context.productToPosition.getOrElse(p, ???).readable} is guessed as ${entity.name.readable} "
     }
   }
 

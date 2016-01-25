@@ -6,6 +6,7 @@ import domain.dsl.{Context, Position}
 import org.kiama.rewriting.Rewriter._
 
 import scala.collection.mutable
+import scala.util.parsing.input.Positional
 
 
 /**
@@ -28,13 +29,13 @@ object EntityRewritor {
 
     }
 
-    def typ(m: Product) = rule[QName] {
+    def typ(m: Positional) = rule[QName] {
       case q: QName if !q.isFull => {
         val possible: List[QName] = findLastEq(q, context.nameIndex.keys.toList)
-        possible.foreach(p => context.message(m, GuessingFullName(m, q, context.nameIndex.getOrElse(p, ???))))
+        possible.foreach(p => context.message(domain.position(m), GuessingFullName(domain.position(m), q, context.nameIndex.getOrElse(p, ???))))
         if (possible.nonEmpty) {
           val qq = possible.head.copy()
-          context.message(m, GuessedFullName(m, q, context.nameIndex.getOrElse(qq, ???)))
+          context.message(domain.position(m), GuessedFullName(domain.position(m), q, context.nameIndex.getOrElse(qq, ???)))
           qq
         } else {
           q
@@ -72,7 +73,7 @@ object EntityRewritor {
       case e: Entity =>
         if (e.name.isFull) e
         else
-          e.copy(name = e.name.full(context.positionIndex.getOrElse(e, ???).doc.getPackage))
+          e.copy(name = e.name.full(context.productToPosition.getOrElse(e, ???).doc.getPackage))
     }
     val doc = everywherebu(e)(domain)
       .get.asInstanceOf[Domain]

@@ -22,18 +22,19 @@ object CommentFinder {
   }
 
   //TODO can't patch for inner members.
-  def patchToDomain(comments: List[Comment], domain: Domain): Map[Product,Comment] = {
-    val pros: List[Positional] =( domain.entities ::: domain.entities.flatMap(_.properties) ::: domain.entities.flatMap(_.methods)).sortWith(
-      (a: Positional, b: Positional) =>
-        a.pos.<(b.pos))
+  def patchToDomain(comments: List[Comment], domain: Domain): Map[Position,Comment] = {
+    val pros: List[Positional] =domain.entities ::: domain.entities.flatMap(_.members()).map(_.asInstanceOf[Positional])
     val items:List[(Comment,Option[Positional])]=comments.map {
       c:Comment =>
         (c,pros.find({
           p:Positional =>
-            p.pos.line == c.pos.line || p.pos.line == c.pos.line+1
-        }))
+            p.pos.line == c.pos.line
+        }).orElse(pros.find({
+          p:Positional =>
+            p.pos.line == c.pos.line+1
+        })))
     }
-    items.filter(_._2.isDefined).map(x=>(x._2.get.asInstanceOf[Product],x._1)).toMap
+    items.filter(_._2.isDefined).map(x=>(Position(x._2.get.pos,domain.document),x._1)).toMap
   }
 
 
